@@ -3,7 +3,16 @@
 @tailwind utilities;
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .table-border {
+    @apply border-[0.5px] border-gray-500;
   }
 }
+
+/* @media print {
+  .print-a4 {
+    width: 794px;
+    height: 1123px;
+    margin: 0 auto;
+    page-break-after: always;
+  }
+} */
