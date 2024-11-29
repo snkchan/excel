@@ -1,51 +1,8 @@
 import { keyMap, ROW_TITLE_VALUE_ARR } from "../not-comp/const"
-
-export const devertEngToKor = (data: Array<any>) => {
-  const reversedKeyMap: Record<string, string> = Object.fromEntries(
-    Object.entries(keyMap).map(([kor, eng]) => [eng, kor])
-  )
-
-  const convertedData = data
-    .filter((item) => item["requestDate"] !== "요약") // "요약" 필터링
-    .map((item) => {
-      const newItem: any = {}
-      for (const key in item) {
-        if (reversedKeyMap[key]) {
-          newItem[reversedKeyMap[key]] = item[key] // 키 변환
-        }
-      }
-      return newItem
-    })
-
-  return [
-    ...convertedData,
-    ...data.filter((item) => item["requestDate"] === "요약"),
-  ]
-}
-
-export const convertKorToEng = (data: Array<any>) => {
-  const convertedData = data
-    .filter((item) => item["요청일자"] !== "요약") // "요약" 필터링
-    .map((item) => {
-      const newItem: any = {}
-      for (const key in item) {
-        if (keyMap[key]) {
-          newItem[keyMap[key]] = item[key] // 키 변환
-        }
-      }
-      return newItem
-    })
-
-  return [
-    ...convertedData,
-    ...data.filter((item) => item["요청일자"] === "요약"),
-  ]
-}
-
 // 영어 키를 한국어 키로 변환하는 함수
-export const convertEngToKor = (title) => {
+export const convertEngToKor = (title: string) => {
   const korTitle = Object.entries(keyMap).find(([, eng]) => eng === title)?.[0]
-  return korTitle || title // 매핑이 없으면 원래 제목 반환
+  return korTitle || title
 }
 
 export function DeliveryInstrctionHeaderTitle() {
