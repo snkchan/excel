@@ -5,10 +5,10 @@ import * as XLSX from "xlsx"
 import { DeliveryInstrctionHeaderTitle, RowTitle } from "./hold"
 import { ROW_TITLE_VALUE_ARR } from "./not-comp/const"
 import { convertOrderData } from "./not-comp/business-logic"
+import { convertedExcelDataType, excelDataType, summaryType } from "./types"
 export default function Exce() {
   const [orderData, setOrderData] = useState<Array<convertedExcelDataType>>([]) // 초기값을 null로 설정
-
-  const [summaryData, setSummaryData] = useState<Array<summaryType>>([])
+  const [, setSummaryData] = useState<Array<summaryType>>([])
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
