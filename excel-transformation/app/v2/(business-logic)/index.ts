@@ -1,5 +1,5 @@
+import { keyMap } from "@/app/not-comp/const"
 import { ConvertedExcelDataType, ExcelDataType } from "@/app/types"
-import { keyMap } from "../const"
 
 /**  */
 
@@ -20,14 +20,11 @@ export const formatDateToMMDD = (date: Date) => {
 
 /** ["요청일자", "납기일"]을 날짜 포맷으로 변환 */
 export const transformDates = (data: Array<ConvertedExcelDataType>) => {
-  console.log("실행")
   return data.map((row) => {
     if (typeof row.requestDate === "number") {
-      console.log("납기일자 실행")
       row.requestDate = formatDateToMMDD(excelDateToJSDate(row.requestDate))
     }
     if (typeof row.deliveryDate === "number") {
-      console.log("납기일자 실행")
       row.deliveryDate = formatDateToMMDD(excelDateToJSDate(row.deliveryDate))
     }
     return row
@@ -37,7 +34,7 @@ export const transformDates = (data: Array<ConvertedExcelDataType>) => {
 /** 한글 key -> 영어 key 변환 + 날짜 변환 + 빈데이터는 키값은 유지 데이터는 빈값으로  */
 export const convertOrderData = (data: Array<ExcelDataType>) => {
   const keyChangedData = convertChangeKeyToEng(data)
-  console.log("test")
+
   return transformDates(keyChangedData)
 }
 
@@ -46,11 +43,13 @@ export const convertChangeKeyToEng = (
   data: Array<ExcelDataType>
 ): Array<ConvertedExcelDataType> => {
   return data.map((item) => {
-    const newObj = createInitEngData()
+    const newObj: ConvertedExcelDataType = createInitEngData() // 타입 명시
     for (const key in item) {
-      const engKey = keyMap[key as keyof ExcelDataType]
+      const engKey = keyMap[
+        key as keyof ExcelDataType
+      ] as keyof ConvertedExcelDataType // 타입 강제
       if (engKey) {
-        newObj[engKey] = item[key as keyof ExcelDataType] ?? null // undefined 방지
+        newObj[engKey] = item[key as keyof ExcelDataType] ?? undefined // null을 undefined로 처리
       }
     }
     return newObj
@@ -58,17 +57,17 @@ export const convertChangeKeyToEng = (
 }
 
 /** 변환된 데이터의 초기값 */
-const createInitEngData = (): convertedExcelDataType => {
+const createInitEngData = (): ConvertedExcelDataType => {
   return {
-    address: null,
-    associationName: null,
-    deliveryDate: null,
-    phoneNumber: null,
-    productName: null,
-    quantity: null,
-    recipient: null,
-    remarks: null,
-    requestDate: null,
-    weight: null,
+    address: undefined,
+    associationName: undefined,
+    deliveryDate: undefined,
+    phoneNumber: undefined,
+    productName: undefined,
+    quantity: undefined,
+    recipient: undefined,
+    remarks: undefined,
+    requestDate: undefined,
+    weight: undefined,
   }
 }

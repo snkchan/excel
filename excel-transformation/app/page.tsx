@@ -52,7 +52,7 @@ export default function Exce() {
       {orderData &&
         orderData.map((info, idx) => (
           <div
-            className="grid h-fit w-full grid-cols-[repeat(4,0.3fr)_repeat(2,0.8fr)_1fr_repeat(3,0.25fr)_0.1fr]"
+            className="grid h-fit w-full grid-cols-[repeat(4,minmax(80px,0.3fr))_repeat(2,minmax(150px,0.8fr))_minmax(200px,1fr)_repeat(3,minmax(60px,0.25fr))_minmax(30px,0.1fr)]"
             key={idx}
           >
             {ROW_TITLE_VALUE_ARR.map((key, keyIdx) => (

@@ -1,8 +1,8 @@
 // types.d.ts
-export type excelDataType = {
-  " 수량(포) ": string
-  " 중량(kg) ": string
-  납기일: string
+export type ExcelDataType = Partial<{
+  "수량(포)": number
+  "중량(kg)": number
+  납기일: number
   받는사람: string
   비고: string
   요청일자: string
@@ -10,27 +10,25 @@ export type excelDataType = {
   조합명: string
   주소: number
   품종명: string
-  열1?: string | undefined
-}
+}>
 
-export type convertedExcelDataType = {
-  address: number
+export type ConvertedExcelDataType = Partial<{
+  address: string
   associationName: string
-  deliveryDate: string
-  phoneNumber: number
+  deliveryDate: number | string
+  phoneNumber: string
   productName: string
-  quantity: string
+  quantity: number
   recipient: string
   remarks: string
-  requestDate: string
-  weight: string
-  columnOne?: string | undefined
-}
+  requestDate: number | string
+  weight: number
+}>
 
 export type summaryType = {
   요청일자: "요약"
-  " 수량(포) ": number
-  " 중량(kg) ": number
+  "수량(포)": number
+  "중량(kg)": number
 }
 
 export type convertedSummaryType = {
@@ -38,3 +36,5 @@ export type convertedSummaryType = {
   quantity: string
   weight: string
 }
+
+// ---------------수정 타입
