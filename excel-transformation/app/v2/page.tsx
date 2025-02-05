@@ -2,12 +2,14 @@
 import * as XLSX from "xlsx"
 import { ConvertedExcelDataType, ExcelDataType, summaryType } from "../types"
 import { convertOrderData } from "./(business-logic)"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react"
 import { convertEngToKor, DeliveryInstrctionHeaderTitle } from "../hold"
 import { ROW_TITLE_VALUE_ARR } from "../not-comp/const"
+import { useRouter } from "next/navigation"
 
 export default function V2() {
   const [excelData, setExcelData] = useState<Array<ConvertedExcelDataType>>([]) // 초기값을 null로 설정
+  const [clickedIdxArr, setClickedIdxArr] = useState([-1])
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -45,9 +47,18 @@ export default function V2() {
   return (
     <div className="w-full h-dvh flex items-center justify-center pt-20">
       <div className="w-[90dvw] h-dvh ">
-        {/* 수정된 부분 */}
-        <UpLoadExcelBtn handleFileUpload={handleFileUpload} />
-        {excelData.length > 0 && <ExcelDataSheet excelData={excelData} />}
+        <div className="w-full h-fit flex justify-between items-center ">
+          <UpLoadExcelBtn handleFileUpload={handleFileUpload} />
+          {clickedIdxArr.length > 1 && <ViewCertificateButton />}
+        </div>
+
+        {excelData.length > 0 && (
+          <ExcelDataSheet
+            excelData={excelData}
+            clickedIdxArr={clickedIdxArr}
+            setClickedIdxArr={setClickedIdxArr}
+          />
+        )}
       </div>
     </div>
   )
@@ -57,10 +68,10 @@ type UpLoadExcelBtnPT = {
   handleFileUpload: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-// 엑셀 파일업로드 버튼 컴포넌트
+/** 엑셀 파일업로드 버튼 컴포넌트*/
 function UpLoadExcelBtn({ handleFileUpload }: UpLoadExcelBtnPT) {
   return (
-    <div className="relative w-40 h-12 bg-red-200 rounded-lg">
+    <div className="relative w-40 h-12  rounded-lg">
       <input
         type="file"
         accept=".xlsx, .xls"
@@ -76,34 +87,36 @@ function UpLoadExcelBtn({ handleFileUpload }: UpLoadExcelBtnPT) {
 
 type ExcelDataSheetPT = {
   excelData: Array<ConvertedExcelDataType>
+  clickedIdxArr: Array<number>
+  setClickedIdxArr: Dispatch<SetStateAction<Array<number>>>
 }
 
-// 엑셀 표 컴포넌트
-function ExcelDataSheet({ excelData }: ExcelDataSheetPT) {
+/**엑셀 표 컴포넌트 */
+function ExcelDataSheet({
+  excelData,
+  clickedIdxArr,
+  setClickedIdxArr,
+}: ExcelDataSheetPT) {
   return (
     <>
       <DeliveryInstrctionHeaderTitle />
       <div>
         <RowTitle />
-        {excelData.map((info, idx) => (
-          <div
-            className="hover:bg-gray-100 group cursor-pointer grid h-fit w-full grid-cols-[minmax(60px,1fr)_minmax(80px,1.3fr)_minmax(40px,0.7fr)_minmax(40px,0.7fr)_minmax(50px,0.85fr)_minmax(140px,2fr)_minmax(260px,3.5fr)_minmax(60px,1fr)_minmax(150px,2fr)_minmax(80px,1.3fr)]"
+        {excelData.map((shipment, idx) => (
+          <ShipmentCell
+            shipment={shipment}
             key={idx}
-          >
-            {ROW_TITLE_VALUE_ARR.map((key, keyIdx) => (
-              <div className="font-bold border border-gray-200 " key={keyIdx}>
-                <span className="w-full h-fit flex items-center justify-center text-center text-gray-600  break-all p-2 text-sm group-hover:text-black group-hover:text-sm ">
-                  {info[key as keyof ConvertedExcelDataType]}
-                </span>
-              </div>
-            ))}
-          </div>
+            idx={idx}
+            clickedIdxArr={clickedIdxArr}
+            setClickedIdxArr={setClickedIdxArr}
+          />
         ))}
       </div>
     </>
   )
 }
 
+/**출고지시서 항목들을 나타내는 title 컴포넌트*/
 function RowTitle() {
   return (
     <div className="w-full h-fit">
@@ -117,5 +130,63 @@ function RowTitle() {
         ))}
       </div>
     </div>
+  )
+}
+
+type ShipmentCellPT = {
+  shipment: ConvertedExcelDataType
+  clickedIdxArr: Array<number>
+  setClickedIdxArr: Dispatch<SetStateAction<Array<number>>>
+  idx: number
+}
+
+/**  출고지시서 표의 한줄을 나타내는 컴포넌트*/
+function ShipmentCell({
+  shipment,
+  clickedIdxArr,
+  setClickedIdxArr,
+  idx, // 현재 아이템의 인덱스 추가
+}: ShipmentCellPT & { idx: number }) {
+  const onClickShipmentCell = () => {
+    setClickedIdxArr((prev) =>
+      prev.includes(idx) ? prev.filter((item) => item !== idx) : [...prev, idx]
+    )
+  }
+
+  return (
+    <div
+      onClick={onClickShipmentCell}
+      className={`cursor-pointer grid h-fit w-full grid-cols-[minmax(60px,1fr)_minmax(80px,1.3fr)_minmax(40px,0.7fr)_minmax(40px,0.7fr)_minmax(50px,0.85fr)_minmax(140px,2fr)_minmax(260px,3.5fr)_minmax(60px,1fr)_minmax(150px,2fr)_minmax(80px,1.3fr)]
+        ${
+          clickedIdxArr.includes(idx)
+            ? "bg-blue-200"
+            : "hover:bg-gray-100 group"
+        }
+      `}
+    >
+      {ROW_TITLE_VALUE_ARR.map((column, idx) => (
+        <div className="font-bold border border-gray-200 " key={idx}>
+          <span className="w-full h-fit flex items-center justify-center text-center text-gray-600 break-all p-2 text-sm group-hover:text-black group-hover:text-sm">
+            {shipment[column as keyof ConvertedExcelDataType]}
+          </span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/** 인수증 확인하러가기 컴포넌트 */
+function ViewCertificateButton() {
+  const router = useRouter()
+  const onClickBtn = () => {
+    router.push("/test")
+  }
+  return (
+    <button
+      onClick={onClickBtn}
+      className="transition-all w-40 h-12  rounded-lg bg-blue-500 text-white  flex items-center justify-center cursor-pointer"
+    >
+      인수증 확인하럭 가기
+    </button>
   )
 }

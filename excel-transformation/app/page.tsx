@@ -5,9 +5,9 @@ import * as XLSX from "xlsx"
 import { DeliveryInstrctionHeaderTitle, RowTitle } from "./hold"
 import { ROW_TITLE_VALUE_ARR } from "./not-comp/const"
 import { convertOrderData } from "./not-comp/business-logic"
-import { convertedExcelDataType, excelDataType, summaryType } from "./types"
+import { ConvertedExcelDataType, ExcelDataType, summaryType } from "./types"
 export default function Exce() {
-  const [orderData, setOrderData] = useState<Array<convertedExcelDataType>>([]) // 초기값을 null로 설정
+  const [orderData, setOrderData] = useState<Array<ConvertedExcelDataType>>([]) // 초기값을 null로 설정
   const [, setSummaryData] = useState<Array<summaryType>>([])
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,14 +23,14 @@ export default function Exce() {
       const workbook = XLSX.read(data, { type: "array" })
       const sheetName = workbook.SheetNames[0] // sheetName을 배열안에 순서대로 넣은 정보
       const sheet = workbook.Sheets[sheetName]
-      const enteredData: Array<excelDataType | summaryType> =
+      const enteredData: Array<ExcelDataType | summaryType> =
         XLSX.utils.sheet_to_json(sheet, { header: 3, range: 4 })
 
       const summaryData = enteredData.slice(-1) as Array<summaryType>
       const orderData = enteredData.slice(
         0,
         enteredData.length - 1
-      ) as Array<excelDataType>
+      ) as Array<ExcelDataType>
       const convertedData = convertOrderData(orderData)
       setOrderData(convertedData)
       setSummaryData(summaryData)
@@ -58,7 +58,7 @@ export default function Exce() {
             {ROW_TITLE_VALUE_ARR.map((key, keyIdx) => (
               <div className="font-bold border border-gray-200" key={keyIdx}>
                 <span className="flex items-center justify-center text-gray-600 py-2">
-                  {info[key as keyof convertedExcelDataType]}
+                  {info[key as keyof ConvertedExcelDataType]}
                 </span>
               </div>
             ))}
