@@ -1,6 +1,28 @@
-import { ItalianRyegrassKeyArr, MainBreedKeyArr } from "../not-comp/const"
+"use client"
+
+import { useSearchParams } from "next/navigation"
+import { ItalianRyegrassKeyArr, MainBreedKeyArr } from "../../not-comp/const"
+import { useEffect, useState } from "react"
+import { ConvertedExcelDataType } from "@/app/types"
 
 export default function Test() {
+  const searchParams = useSearchParams()
+  const [data, setData] = useState<Array<ConvertedExcelDataType>>([])
+
+  useEffect(() => {
+    const dataParam = searchParams.get("data")
+    if (dataParam) {
+      try {
+        const parsedData = JSON.parse(decodeURIComponent(dataParam))
+        setData(parsedData)
+      } catch (error) {
+        console.error("Invalid JSON:", error)
+      }
+    }
+  }, [searchParams])
+
+  console.log(data)
+
   return (
     <div className="w-full h-full flex justify-center pt-6">
       <div className="w-[794px]">
@@ -128,10 +150,7 @@ function ItalianRyegrass() {
       <div className="center table-border">{`${MainBreedKeyArr[0]}20Kg`}</div>
       <div>
         {Array.from({ length: 12 }, (_, idx) => (
-          <TableItem
-            breedType={ItalianRyegrassKeyArr[idx]}
-            key={ItalianRyegrassKeyArr[idx]}
-          />
+          <TableItem breedType={ItalianRyegrassKeyArr[idx]} key={idx} />
         ))}
       </div>
     </div>

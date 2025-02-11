@@ -49,7 +49,12 @@ export default function V2() {
       <div className="w-[90dvw] h-dvh ">
         <div className="w-full h-fit flex justify-between items-center ">
           <UpLoadExcelBtn handleFileUpload={handleFileUpload} />
-          {clickedIdxArr.length > 1 && <ViewCertificateButton />}
+          {clickedIdxArr.length > 1 && (
+            <ViewCertificateButton
+              clickedIdxArr={clickedIdxArr}
+              excelData={excelData}
+            />
+          )}
         </div>
 
         {excelData.length > 0 && (
@@ -175,11 +180,23 @@ function ShipmentCell({
   )
 }
 
+type ViewCertificateButtonPT = {
+  clickedIdxArr: Array<number>
+  excelData: Array<ConvertedExcelDataType>
+}
+
 /** 인수증 확인하러가기 컴포넌트 */
-function ViewCertificateButton() {
+function ViewCertificateButton({
+  clickedIdxArr,
+  excelData,
+}: ViewCertificateButtonPT) {
   const router = useRouter()
   const onClickBtn = () => {
-    router.push("/test")
+    const selectedData = clickedIdxArr
+      .filter((idx) => idx !== -1)
+      .map((idx) => excelData[idx])
+    const queryParam = encodeURIComponent(JSON.stringify(selectedData))
+    router.push(`/v2/test?data=${queryParam}`)
   }
   return (
     <button
