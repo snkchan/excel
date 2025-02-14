@@ -25,6 +25,17 @@ export type ConvertedExcelDataType = Partial<{
   weight: number
 }>
 
+export type ConvertedTitleDataType = {
+  sender: string
+  receiver: string
+}
+
+export type TitleDataType = {
+  "종자 출고요청서": string
+  __EMPTY: string
+  __rowNum__: number
+}
+
 export type summaryType = {
   요청일자: "요약"
   "수량(포)": number

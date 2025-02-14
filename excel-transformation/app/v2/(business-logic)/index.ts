@@ -1,5 +1,10 @@
 import { keyMap } from "@/app/not-comp/const"
-import { ConvertedExcelDataType, ExcelDataType } from "@/app/types"
+import {
+  ConvertedExcelDataType,
+  ConvertedTitleDataType,
+  ExcelDataType,
+  TitleDataType,
+} from "@/app/types"
 
 /**  */
 
@@ -56,6 +61,12 @@ export const convertChangeKeyToEng = (
   })
 }
 
+export const convertTitleData = (
+  data: Array<TitleDataType>
+): ConvertedTitleDataType => {
+  return { sender: data[0].__EMPTY, receiver: data[1].__EMPTY }
+}
+
 /** 변환된 데이터의 초기값 */
 const createInitEngData = (): ConvertedExcelDataType => {
   return {
@@ -70,4 +81,25 @@ const createInitEngData = (): ConvertedExcelDataType => {
     requestDate: undefined,
     weight: undefined,
   }
+}
+
+export const formatDeliveryDate = (date: string | number): string => {
+  if (typeof date === "number" || typeof date === undefined) return ""
+  const match = date.match(/^(\d{2})월 (\d{2})일$/)
+  if (!match) return "" // 예외사항이면 빈 문자열 반환
+
+  const [, month, day] = match
+
+  // 현재 연도 가져오기 (올해 기준)
+  const year = new Date().getFullYear()
+
+  // Date 객체 생성
+  const dateObj = new Date(year, Number(month) - 1, Number(day))
+
+  // 요일을 한국어로 가져오기
+  const weekday = new Intl.DateTimeFormat("ko-KR", { weekday: "short" }).format(
+    dateObj
+  )
+
+  return `${month}/${day}(${weekday})`
 }

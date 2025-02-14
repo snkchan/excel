@@ -1,7 +1,13 @@
 "use client"
 import * as XLSX from "xlsx"
-import { ConvertedExcelDataType, ExcelDataType, summaryType } from "../types"
-import { convertOrderData } from "./(business-logic)"
+import {
+  ConvertedExcelDataType,
+  ConvertedTitleDataType,
+  ExcelDataType,
+  summaryType,
+  TitleDataType,
+} from "../types"
+import { convertOrderData, convertTitleData } from "./(business-logic)"
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react"
 import { convertEngToKor, DeliveryInstrctionHeaderTitle } from "../hold"
 import { ROW_TITLE_VALUE_ARR } from "../not-comp/const"
@@ -9,6 +15,10 @@ import { useRouter } from "next/navigation"
 
 export default function V2() {
   const [excelData, setExcelData] = useState<Array<ConvertedExcelDataType>>([]) // 초기값을 null로 설정
+  const [titleData, setTitleData] = useState<ConvertedTitleDataType>({
+    sender: "",
+    receiver: "",
+  })
   const [clickedIdxArr, setClickedIdxArr] = useState([-1])
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +37,14 @@ export default function V2() {
       const enteredData: Array<ExcelDataType | summaryType> =
         XLSX.utils.sheet_to_json(sheet, { header: 3, range: 4 })
 
-      // const summaryData = enteredData.slice(-1) as Array<summaryType> // 엑셀원본의 마지막 요약 데이터 추후작업
+      const enteredTitleData: ConvertedTitleDataType = convertTitleData(
+        XLSX.utils
+          .sheet_to_json(sheet, { header: 3, range: 0 })
+          .slice(0, 2) as Array<TitleDataType>
+      )
+
+      // const summaryData = enteredData.slice(-1) as Array<summaryType>
+      // console.log(summaryData)
       const orderData = enteredData.slice(
         0,
         enteredData.length - 1
@@ -35,6 +52,7 @@ export default function V2() {
 
       const convertedData = convertOrderData(orderData)
       setExcelData(convertedData)
+      setTitleData(enteredTitleData)
     }
 
     reader.onerror = () => {
@@ -59,11 +77,30 @@ export default function V2() {
 
         {excelData.length > 0 && (
           <ExcelDataSheet
+            titleData={titleData}
             excelData={excelData}
             clickedIdxArr={clickedIdxArr}
             setClickedIdxArr={setClickedIdxArr}
           />
         )}
+      </div>
+    </div>
+  )
+}
+
+type SenderReceiverInfoPT = {
+  titleData: ConvertedTitleDataType
+}
+
+function SenderReceiverInfo({ titleData }: SenderReceiverInfoPT) {
+  const { receiver, sender } = titleData
+  return (
+    <div className=" w-full h-fit py-3">
+      <div className="font-semibold text-lg flex items-center">
+        발신 : <span className="custom-text pl-3">{sender}</span>
+      </div>
+      <div className="font-semibold text-lg flex items-center">
+        수신 : <span className="custom-text pl-3">{receiver}</span>
       </div>
     </div>
   )
@@ -91,6 +128,7 @@ function UpLoadExcelBtn({ handleFileUpload }: UpLoadExcelBtnPT) {
 }
 
 type ExcelDataSheetPT = {
+  titleData: ConvertedTitleDataType
   excelData: Array<ConvertedExcelDataType>
   clickedIdxArr: Array<number>
   setClickedIdxArr: Dispatch<SetStateAction<Array<number>>>
@@ -98,13 +136,15 @@ type ExcelDataSheetPT = {
 
 /**엑셀 표 컴포넌트 */
 function ExcelDataSheet({
+  titleData,
   excelData,
   clickedIdxArr,
   setClickedIdxArr,
 }: ExcelDataSheetPT) {
   return (
-    <>
+    <div className="pb-10">
       <DeliveryInstrctionHeaderTitle />
+      <SenderReceiverInfo titleData={titleData} />
       <div>
         <RowTitle />
         {excelData.map((shipment, idx) => (
@@ -117,7 +157,7 @@ function ExcelDataSheet({
           />
         ))}
       </div>
-    </>
+    </div>
   )
 }
 
