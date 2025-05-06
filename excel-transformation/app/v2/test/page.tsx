@@ -5,11 +5,12 @@ import { useEffect, useState } from "react"
 import { ConvertedExcelDataType } from "@/app/types"
 import { Title } from "./(component)/Title"
 import { SubTitle } from "./(component)/SubTitle"
-import { Table } from "./(component)/table/table"
+
 import { SubTable } from "./(component)/SubTable"
 import { Details } from "./(component)/Details"
 import { CompanyName } from "./(component)/CompanyName"
 import { Footer } from "./(component)/Footer"
+import { Table } from "./(component)/table/Table"
 
 export default function Test() {
   const searchParams = useSearchParams()
@@ -26,14 +27,14 @@ export default function Test() {
       }
     }
   }, [searchParams])
-  console.log(data)
+  // console.log(data)
   if (!data[0]) return
   return (
     <div className="w-full h-full flex justify-center pt-6">
       <div className="w-[794px]">
         <Title data={data} />
         <SubTitle data={data} />
-        <Table />
+        <Table data={data}/>
         <SubTable data={data} />
         <Details data={data} />
         <CompanyName />

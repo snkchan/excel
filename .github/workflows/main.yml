@@ -28,5 +28,5 @@ jobs:
       - name: Deploy to Netlify
         run: npx netlify deploy --prod --dir=./out # 빌드 결과물 배포
         env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }} # Netlify Personal Access Token
+          NETLIFY_AUTH_TOKEN: ` # Netlify Personal Access Token
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}       # Netlify Site ID

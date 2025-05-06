@@ -48,13 +48,13 @@ export const convertChangeKeyToEng = (
   data: Array<ExcelDataType>
 ): Array<ConvertedExcelDataType> => {
   return data.map((item) => {
-    const newObj: ConvertedExcelDataType = createInitEngData() // 타입 명시
+    const newObj = {} as ConvertedExcelDataType  // 빈 객체로 시작하고 타입 단언
     for (const key in item) {
-      const engKey = keyMap[
-        key as keyof ExcelDataType
-      ] as keyof ConvertedExcelDataType // 타입 강제
+      const engKey = keyMap[key as keyof ExcelDataType] as keyof ConvertedExcelDataType
       if (engKey) {
-        newObj[engKey] = item[key as keyof ExcelDataType] ?? undefined // null을 undefined로 처리
+        const value = item[key as keyof ExcelDataType]
+        // 타입 단언을 사용하여 할당
+        ;(newObj[engKey] as any) = value ?? null
       }
     }
     return newObj
@@ -68,7 +68,7 @@ export const convertTitleData = (
 }
 
 /** 변환된 데이터의 초기값 */
-const createInitEngData = (): ConvertedExcelDataType => {
+const createInitEngData = (): Partial<ConvertedExcelDataType> => {
   return {
     address: undefined,
     associationName: undefined,

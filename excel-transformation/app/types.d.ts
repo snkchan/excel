@@ -12,18 +12,18 @@ export type ExcelDataType = Partial<{
   품종명: string
 }>
 
-export type ConvertedExcelDataType = Partial<{
-  address: string
-  associationName: string
-  deliveryDate: number | string
-  phoneNumber: string
-  productName: string
-  quantity: number
-  recipient: string
-  remarks: string
-  requestDate: number | string
-  weight: number
-}>
+export type ConvertedExcelDataType = {
+  address?: string | null
+  associationName?: string | null
+  deliveryDate?: number | string | null
+  phoneNumber?: string | null
+  productName?: string | null
+  quantity?: number | null
+  recipient?: string | null
+  remarks?: string | null
+  requestDate?: number | string | null
+  weight?: number | null
+}
 
 export type ConvertedTitleDataType = {
   sender: string
@@ -49,3 +49,19 @@ export type convertedSummaryType = {
 }
 
 // ---------------수정 타입
+
+export const convertChangeKeyToEng = (
+  data: Array<ExcelDataType>
+): Array<ConvertedExcelDataType> => {
+  return data.map((item) => {
+    const newObj: ConvertedExcelDataType = {}
+    for (const key in item) {
+      const engKey = keyMap[key as keyof ExcelDataType]
+      if (engKey) {
+        const value = item[key as keyof ExcelDataType]
+        newObj[engKey] = value === undefined ? null : value
+      }
+    }
+    return newObj
+  })
+}

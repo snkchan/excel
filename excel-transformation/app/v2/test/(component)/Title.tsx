@@ -16,10 +16,12 @@ export function Title({ data }: TitlePt) {
         {/** 박스 dropShadow 변경해야함 */}
         수입대행 종자 인수증
       </p>
-      <div className="text-base flex flex-col items-center justify-center h-full custom-text">
+      <div className="text-base flex flex-col items-center justify-center h-full custom-text break-keep text-center">
         <p>{recipient}</p>
         <p>{phoneNumber}</p>
       </div>
     </div>
   )
 }
+
+

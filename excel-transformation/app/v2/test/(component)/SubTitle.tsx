@@ -8,16 +8,17 @@ type SbuTitlePt = {
   data: Array<ConvertedExcelDataType>
 }
 export function SubTitle({ data }: SbuTitlePt) {
-  const { address, recipient } = data[0]
+  const { address } = data[0]
   return (
     <>
       <div className="flex gap-x-2 items-center pt-1 mt-6">
         <Circle />
         <span className="text-lg ">공 급 조 합 명 </span>
         <span className="text-xl pb-1">:</span>
-        <span className="text-xl font-semibold custom-text">
-          {recipient} / {address}
-        </span>
+        <input
+          className="text-xl font-semibold custom-text px-2 py-1 border-2 border-gray-300 w-[75%]"
+          defaultValue={address}
+        />
       </div>
       <div className="flex gap-x-2 items-center py-1">
         <Circle />

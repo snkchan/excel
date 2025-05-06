@@ -59,3 +59,47 @@ export const SubBreedMap = {
   Rye: Object.values(RyeSubMap),
   Oats: Object.values(OatsSubMap),
 }
+
+/** 품종 리스트 */
+export const ForageVarieties = {
+  italianRyegrass: {
+    WinterHawk: "WinterHawk",
+    Florida80: "Florida80",
+    FrostProof: "FrostProof",
+    Grazer: "Grazer",
+    GreenFarm: "GreenFarm",
+    Tam90: "Tam90",
+    TetraStar: "TetraStar",
+    Ribeye: "Ribeye",
+    Kowinearly: "Kowinearly",
+    Marshall: "Marshall",
+    MegaPlus: "MegaPlus",
+    NewDawn: "NewDawn",
+    Credence: "Credence",
+    Dipper: "Dipper",
+    ED: "ED",
+  },
+  rye: {
+    earlyMid: {
+      Elbon: "Elbon",
+      Koolgrazer: "Koolgrazer",
+      Wintergrazer70: "Wintergrazer70",
+    },
+    midLate: {
+      Cayuse: "Cayuse",
+      Prima: "Prima",
+      Spooner: "Spooner",
+    },
+  },
+  oat: {
+    earlyMid: {
+      Swan: "Swan",
+    },
+  },
+  orchardGrass: {
+    Amba: "Amba",
+  },
+  timothy: {
+    Climax: "Climax",
+  },
+}
