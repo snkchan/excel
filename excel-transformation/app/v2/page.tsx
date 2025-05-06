@@ -243,7 +243,7 @@ function ViewCertificateButton({
       onClick={onClickBtn}
       className="transition-all w-40 h-12  rounded-lg bg-blue-500 text-white  flex items-center justify-center cursor-pointer"
     >
-      인수증 확인하럭 가기
+      인수증 확인하러 가기
     </button>
   )
 }

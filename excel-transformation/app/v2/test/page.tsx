@@ -10,7 +10,8 @@ import { SubTable } from "./(component)/SubTable"
 import { Details } from "./(component)/Details"
 import { CompanyName } from "./(component)/CompanyName"
 import { Footer } from "./(component)/Footer"
-import { Table } from "./(component)/table/Table"
+import Table from "./(component)/Table"
+// import { Table } from "./(component)/table/Table"
 
 export default function Test() {
   const searchParams = useSearchParams()
@@ -34,7 +35,7 @@ export default function Test() {
       <div className="w-[794px]">
         <Title data={data} />
         <SubTitle data={data} />
-        <Table data={data}/>
+        <Table/>
         <SubTable data={data} />
         <Details data={data} />
         <CompanyName />
@@ -43,3 +44,4 @@ export default function Test() {
     </div>
   )
 }
+
