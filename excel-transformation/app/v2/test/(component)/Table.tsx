@@ -1,4 +1,5 @@
 import { ConvertedExcelDataType } from "@/app/types"
+import { useState } from "react"
 
 type TabelPT = {data:Array<ConvertedExcelDataType>}
 
@@ -7,8 +8,8 @@ type TabelPT = {data:Array<ConvertedExcelDataType>}
 
 export default function Table({data}:TabelPT){
   
-   const {weight,quantity,productName} = data[0]
-   console.log({productName: `${productName} 품종명` })
+   const {weight,quantity,productName,remarks} = data[0]
+   const [remark,setRemark] = useState(remarks)
   const checkbreed = (productName: string) => {
     if(productName === "Florida 80") return 0
     if(Object.keys(italianRyegrass).includes(productName)) return 1
@@ -23,9 +24,9 @@ export default function Table({data}:TabelPT){
   return <table className="w-full border-2 border-black border-collapse">
   <TableHeader/>
   <tbody>
-   <ItalianRyegrass data={data} breedNum={breedNum} />
-   <Rye data={data} breedNum={breedNum}/>
-   <Oats data={data} breedNum={breedNum}/>
+   <ItalianRyegrass data={data} breedNum={breedNum} setRemark={setRemark} />
+   <Rye data={data} breedNum={breedNum} setRemark={setRemark}/>
+   <Oats data={data} breedNum={breedNum} setRemark={setRemark}/>
    <TableFooter quantity={quantity as number} weight={weight as number}/>
   </tbody>
 </table>
@@ -51,17 +52,23 @@ function TableHeader(){
 }
 
 
-type FeedDetailRowPT= {
-  quantity?:number | null,
-  weight?:number | null
+type FeedDetailRowPT = {
+  quantity?: number | null,
+  weight?: number | null,
+  remark?: string | null,
+  setRemark: (remark: string) => void
 }
 
-function FeedDetailRow({quantity,weight}:FeedDetailRowPT){
+function FeedDetailRow({quantity, weight, remark, setRemark}: FeedDetailRowPT) {
   return <>
     <td className="border-2 border-black text-center custom-text">{quantity}</td>
     <td className="border-2 border-black text-center custom-text">{weight}</td>
-    <td className="border-2 border-black p-0">
-      <input className="w-full h-full text-center border-none outline-none" />
+    <td className="border-2 border-black p-0 ">
+      <input 
+        className="w-full h-full  border-none outline-none text-[10px] text-semibold custom-text  " 
+        defaultValue={remark ?? ""} 
+        onChange={(e) => setRemark(e.target.value)}
+      />
     </td>
   </>
 }
@@ -70,17 +77,23 @@ function FeedDetailRow({quantity,weight}:FeedDetailRowPT){
 type ItalianRyegrassPT= {
   data:Array<ConvertedExcelDataType> 
   breedNum:number | null
+  setRemark: (remark: string) => void
 }
 
-function ItalianRyegrass({data,breedNum}:ItalianRyegrassPT){
-  const {quantity,weight,productName} = data[0]
+function ItalianRyegrass({data,breedNum,setRemark}:ItalianRyegrassPT){
+  const {quantity,weight,productName,remarks} = data[0]
   return <> <tr>
   <td rowSpan={16} className="border-2 border-black text-center align-middle">사<br/><br/><br/>료</td>
   <td rowSpan={12} colSpan={2} className="border-2 border-black text-center align-middle">
     이탈리안<br />라이그라스<br />20Kg
   </td>
   <td className="border-2 border-black text-center h-[33px]">플로리다80</td>
-  <FeedDetailRow quantity={breedNum === 0 ? quantity : undefined} weight={breedNum === 0 ? weight : undefined} />
+  <FeedDetailRow 
+    quantity={breedNum === 0 ? quantity : undefined} 
+    weight={breedNum === 0 ? weight : undefined}
+    remark={breedNum === 0 ? remarks : undefined}
+    setRemark={setRemark}
+  />
 </tr>
 {[
   "그린팜",
@@ -115,7 +128,12 @@ function ItalianRyegrass({data,breedNum}:ItalianRyegrassPT){
   <td className="border-2 border-black text-center h-[33px]">
     { breedNum === -1 && !hasVariety(productName as string) && isEmptyCell(idx) ? productName : variety}
   </td>
-   <FeedDetailRow quantity={hasWeightNQuantity(breedNum,productName as string) ? quantity : undefined} weight={hasWeightNQuantity(breedNum,productName as string) ? weight : undefined} />
+   <FeedDetailRow 
+     quantity={hasWeightNQuantity(breedNum,productName as string) ? quantity : undefined} 
+     weight={hasWeightNQuantity(breedNum,productName as string) ? weight : undefined}
+     remark={hasWeightNQuantity(breedNum,productName as string) ? remarks : undefined}
+     setRemark={setRemark}
+   />
 </tr>
 })}
 </>
@@ -124,10 +142,11 @@ function ItalianRyegrass({data,breedNum}:ItalianRyegrassPT){
 type RyePT = {
   data:Array<ConvertedExcelDataType>
   breedNum:number | null
+  setRemark: (remark: string) => void
 }
 
-function Rye({breedNum,data}:RyePT){
-  const {quantity,weight,productName} = data[0]
+function Rye({breedNum,data,setRemark}:RyePT){
+  const {quantity,weight,productName,remarks} = data[0]
   
   const isEarlyMid = (breedNum:number|null)=>{
     return breedNum === 2
@@ -157,7 +176,9 @@ function Rye({breedNum,data}:RyePT){
   </td>
   <FeedDetailRow 
     quantity={isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? quantity : undefined} 
-    weight={isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? weight : undefined} 
+    weight={isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? weight : undefined}
+    remark={isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? remarks : undefined}
+    setRemark={setRemark}
   />
 </tr>
 <tr>
@@ -167,7 +188,9 @@ function Rye({breedNum,data}:RyePT){
   </td>
   <FeedDetailRow 
     quantity={isMidLate(breedNum) && isMatchingVariety(productName as string) ? quantity : undefined} 
-    weight={isMidLate(breedNum) && isMatchingVariety(productName as string) ? weight : undefined} 
+    weight={isMidLate(breedNum) && isMatchingVariety(productName as string) ? weight : undefined}
+    remark={isMidLate(breedNum) && isMatchingVariety(productName as string) ? remarks : undefined}
+    setRemark={setRemark}
   />
 </tr></>
 }
@@ -177,10 +200,11 @@ function Rye({breedNum,data}:RyePT){
 type OatsPT = {
   data:Array<ConvertedExcelDataType>
   breedNum:number | null
+  setRemark: (remark: string) => void
 }
 
-function Oats({data,breedNum}:OatsPT){
-  const {quantity,weight,productName} = data[0]
+function Oats({data,breedNum,setRemark}:OatsPT){
+  const {quantity,weight,productName,remarks} = data[0]
   
   const isEarlyMid = (breedNum:number|null)=>{
     return breedNum === 4
@@ -210,7 +234,9 @@ function Oats({data,breedNum}:OatsPT){
   </td>
   <FeedDetailRow 
     quantity={isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? quantity : undefined} 
-    weight={isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? weight : undefined} 
+    weight={isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? weight : undefined}
+    remark={isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? remarks : undefined}
+    setRemark={setRemark}
   />
 </tr>
 <tr>
@@ -220,7 +246,9 @@ function Oats({data,breedNum}:OatsPT){
   </td>
   <FeedDetailRow 
     quantity={isMidLate(breedNum) && isMatchingVariety(productName as string) ? quantity : undefined} 
-    weight={isMidLate(breedNum) && isMatchingVariety(productName as string) ? weight : undefined} 
+    weight={isMidLate(breedNum) && isMatchingVariety(productName as string) ? weight : undefined}
+    remark={isMidLate(breedNum) && isMatchingVariety(productName as string) ? remarks : undefined}
+    setRemark={setRemark}
   />
 </tr></>
 }
