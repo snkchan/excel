@@ -35,7 +35,7 @@ export default function Test() {
       <div className="w-[794px]">
         <Title data={data} />
         <SubTitle data={data} />
-        <Table/>
+        <Table data={data}/>
         <SubTable data={data} />
         <Details data={data} />
         <CompanyName />

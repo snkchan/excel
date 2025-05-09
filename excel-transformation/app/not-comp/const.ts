@@ -63,17 +63,17 @@ export const SubBreedMap = {
 /** 품종 리스트 */
 export const ForageVarieties = {
   italianRyegrass: {
-    WinterHawk: "WinterHawk",
-    Florida80: "Florida80",
+    WinterHawk: "윈터호크",
+    Florida80: "플로리다80",
     FrostProof: "FrostProof",
-    Grazer: "Grazer",
-    GreenFarm: "GreenFarm",
-    Tam90: "Tam90",
-    TetraStar: "TetraStar",
+    Grazer: "그레이저",
+    GreenFarm: "그린팜",
+    Tam90: "탐90",
+    TetraStar: "테트라스타",
     Ribeye: "Ribeye",
-    Kowinearly: "Kowinearly",
-    Marshall: "Marshall",
-    MegaPlus: "MegaPlus",
+    Kowinearly: "코워너리",
+    Marshall: "마샬",
+    MegaPlus: "메가플러스",
     NewDawn: "NewDawn",
     Credence: "Credence",
     Dipper: "Dipper",
@@ -95,11 +95,9 @@ export const ForageVarieties = {
     earlyMid: {
       Swan: "Swan",
     },
+    midLate: {
+      Cassue: "Cassue",
+    },
   },
-  orchardGrass: {
-    Amba: "Amba",
-  },
-  timothy: {
-    Climax: "Climax",
-  },
+
 }

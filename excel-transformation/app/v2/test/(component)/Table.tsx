@@ -1,23 +1,44 @@
-export default function Table(){
+import { ConvertedExcelDataType } from "@/app/types"
+
+type TabelPT = {data:Array<ConvertedExcelDataType>}
+
+
+
+
+export default function Table({data}:TabelPT){
+  
+   const {weight,quantity,productName} = data[0]
+   console.log({productName: `${productName} 품종명` })
+  const checkbreed = (productName: string) => {
+    if(productName === "Florida 80") return 0
+    if(Object.keys(italianRyegrass).includes(productName)) return 1
+    if([ ...Object.keys(rye.earlyMid)].includes(productName)) return 2
+    if([ ...Object.keys(rye.midLate)].includes(productName)) return 3
+    if([ ...Object.keys(oat.earlyMid)].includes(productName)) return 4
+    if([ ...Object.keys(oat.midLate)].includes(productName)) return 5
+    return -1
+  }
+  const breedNum = checkbreed(productName as string)
+
   return <table className="w-full border-2 border-black border-collapse">
   <TableHeader/>
   <tbody>
-    {/* 이탈리안 라이그라스 섹션 */}
-   <ItalianRyegrass/>
-   <Oats/>
-   <Rye/>
-   <TableFooter/>
+   <ItalianRyegrass data={data} breedNum={breedNum} />
+   <Rye data={data} breedNum={breedNum}/>
+   <Oats data={data} breedNum={breedNum}/>
+   <TableFooter quantity={quantity as number} weight={weight as number}/>
   </tbody>
 </table>
 }
 
+
 function TableHeader(){
   return  <thead>
   <tr>
-    <th rowSpan={2} className="border-2 border-black w-[60px] text-center">구분</th>
+    <th rowSpan={2} className="border-2 border-black w-[30px] text-center">구<br/>분</th>
     <th colSpan={3} className="border-2 border-black text-center">공 급 내 역</th>
     <th colSpan={2} className="border-2 border-black text-center">공급수량</th>
-    <th rowSpan={2} className="border-2 border-black w-[100px] text-center">선하증권</th>
+    <th rowSpan={2} className="border-2 border-black w-[170px] text-center">선하증권</th>
   </tr>
   <tr>
     <th className="border-2 border-black text-center">초종명</th>
@@ -29,18 +50,37 @@ function TableHeader(){
 </thead>
 }
 
-function ItalianRyegrass(){
+
+type FeedDetailRowPT= {
+  quantity?:number | null,
+  weight?:number | null
+}
+
+function FeedDetailRow({quantity,weight}:FeedDetailRowPT){
+  return <>
+    <td className="border-2 border-black text-center custom-text">{quantity}</td>
+    <td className="border-2 border-black text-center custom-text">{weight}</td>
+    <td className="border-2 border-black p-0">
+      <input className="w-full h-full text-center border-none outline-none" />
+    </td>
+  </>
+}
+
+
+type ItalianRyegrassPT= {
+  data:Array<ConvertedExcelDataType> 
+  breedNum:number | null
+}
+
+function ItalianRyegrass({data,breedNum}:ItalianRyegrassPT){
+  const {quantity,weight,productName} = data[0]
   return <> <tr>
-  <td rowSpan={16} className="border-2 border-black text-center align-middle">사료</td>
+  <td rowSpan={16} className="border-2 border-black text-center align-middle">사<br/><br/><br/>료</td>
   <td rowSpan={12} colSpan={2} className="border-2 border-black text-center align-middle">
     이탈리안<br />라이그라스<br />20Kg
   </td>
   <td className="border-2 border-black text-center h-[33px]">플로리다80</td>
-  <td className="border-2 border-black text-center">50</td>
-  <td className="border-2 border-black text-center">1,000</td>
-  <td className="border-2 border-black p-0">
-    <input className="w-full h-full text-center border-none outline-none" />
-  </td>
+  <FeedDetailRow quantity={breedNum === 0 ? quantity : undefined} weight={breedNum === 0 ? weight : undefined} />
 </tr>
 {[
   "그린팜",
@@ -48,77 +88,206 @@ function ItalianRyegrass(){
   "ED",
   "코위너리",
   "메가플러스",
-  "그레덴스",
+  "크레덴스",
   "마살",
   "FrostProof",
   "테트라스타",
   "", // 빈 칸 1
   "", // 빈 칸 2
-].map((variety) => (
-  <tr key={variety}>
-    <td className="border-2 border-black text-center h-[33px]">{variety}</td>
-    <td className="border-2 border-black text-center"></td>
-    <td className="border-2 border-black text-center"></td>
-    <td className="border-2 border-black p-0">
-      <input className="w-full h-full text-center border-none outline-none" />
-    </td>
-  </tr>
-))}</>
+].map((variety,idx) => { 
+
+  const isMatchingVariety = (productName: string) => {
+    if (Object.keys(italianRyegrass)[idx] === productName) return true
+    return false
+  }
+  const hasWeightNQuantity = (breedNum:number|null,productName:string )=>{
+    return (breedNum === 1 && isMatchingVariety(productName)) || (breedNum === -1 && isEmptyCell(idx))
+  }
+
+  const hasVariety = (productName:string)=>{
+    if(Object.keys(baseVariety).includes(productName)) return true
+    return false
+  }
+  const isEmptyCell = (idx:number)=>{
+    return idx === 9
+  }
+  return  <tr key={idx}>
+  <td className="border-2 border-black text-center h-[33px]">
+    { breedNum === -1 && !hasVariety(productName as string) && isEmptyCell(idx) ? productName : variety}
+  </td>
+   <FeedDetailRow quantity={hasWeightNQuantity(breedNum,productName as string) ? quantity : undefined} weight={hasWeightNQuantity(breedNum,productName as string) ? weight : undefined} />
+</tr>
+})}
+</>
 }
 
-function Oats(){
+type RyePT = {
+  data:Array<ConvertedExcelDataType>
+  breedNum:number | null
+}
+
+function Rye({breedNum,data}:RyePT){
+  const {quantity,weight,productName} = data[0]
+  
+  const isEarlyMid = (breedNum:number|null)=>{
+    return breedNum === 2
+  }
+
+  const isMidLate = (breedNum:number|null)=>{
+    return breedNum === 3
+  }
+
+  const isMatchingVariety = (productName: string) => {
+    if(isEarlyMid(breedNum)) {
+      return Object.keys(rye.earlyMid).includes(productName)
+    }
+    if(isMidLate(breedNum)) {
+      return Object.keys(rye.midLate).includes(productName)
+    }
+    return false
+  }
+
   return <> <tr>
   <td rowSpan={2} className="border-2 border-black text-center align-middle">
     호밀<br />20Kg
   </td>
   <td className="border-2 border-black text-center">조/중생</td>
-  <td className="border-2 border-black text-center"></td>
-  <td className="border-2 border-black text-center">50</td>
-  <td className="border-2 border-black text-center">1,000</td>
-  <td className="border-2 border-black p-0">
-    <input className="w-full h-full text-center border-none outline-none" />
+  <td className="border-2 border-black text-center">
+    {isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
   </td>
+  <FeedDetailRow 
+    quantity={isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? quantity : undefined} 
+    weight={isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? weight : undefined} 
+  />
 </tr>
 <tr>
   <td className="border-2 border-black text-center">만생</td>
-  <td className="border-2 border-black text-center"></td>
-  <td className="border-2 border-black text-center"></td>
-  <td className="border-2 border-black text-center"></td>
-  <td className="border-2 border-black p-0">
-    <input className="w-full h-full text-center border-none outline-none" />
+  <td className="border-2 border-black text-center">
+    {isMidLate(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
   </td>
+  <FeedDetailRow 
+    quantity={isMidLate(breedNum) && isMatchingVariety(productName as string) ? quantity : undefined} 
+    weight={isMidLate(breedNum) && isMatchingVariety(productName as string) ? weight : undefined} 
+  />
 </tr></>
 }
 
-function Rye(){
+
+
+type OatsPT = {
+  data:Array<ConvertedExcelDataType>
+  breedNum:number | null
+}
+
+function Oats({data,breedNum}:OatsPT){
+  const {quantity,weight,productName} = data[0]
+  
+  const isEarlyMid = (breedNum:number|null)=>{
+    return breedNum === 4
+  }
+
+  const isMidLate = (breedNum:number|null)=>{
+    return breedNum === 5
+  }
+
+  const isMatchingVariety = (productName: string) => {
+    if(isEarlyMid(breedNum)) {
+      return Object.keys(oat.earlyMid).includes(productName)
+    }
+    if(isMidLate(breedNum)) {
+      return Object.keys(oat.midLate).includes(productName)
+    }
+    return false
+  }
+
   return <> <tr>
   <td rowSpan={2} className="border-2 border-black text-center align-middle">
     연맥<br />20Kg
   </td>
   <td className="border-2 border-black text-center">조생</td>
-  <td className="border-2 border-black text-center"></td>
-  <td className="border-2 border-black text-center"></td>
-  <td className="border-2 border-black text-center"></td>
-  <td className="border-2 border-black p-0">
-    <input className="w-full h-full text-center border-none outline-none" />
+  <td className="border-2 border-black text-center">
+    {isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
   </td>
+  <FeedDetailRow 
+    quantity={isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? quantity : undefined} 
+    weight={isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? weight : undefined} 
+  />
 </tr>
 <tr>
   <td className="border-2 border-black text-center">중/만생</td>
-  <td className="border-2 border-black text-center"></td>
-  <td className="border-2 border-black text-center"></td>
-  <td className="border-2 border-black text-center"></td>
-  <td className="border-2 border-black p-0">
-    <input className="w-full h-full text-center border-none outline-none" />
+  <td className="border-2 border-black text-center">
+    {isMidLate(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
   </td>
+  <FeedDetailRow 
+    quantity={isMidLate(breedNum) && isMatchingVariety(productName as string) ? quantity : undefined} 
+    weight={isMidLate(breedNum) && isMatchingVariety(productName as string) ? weight : undefined} 
+  />
 </tr></>
 }
 
-function TableFooter(){
+
+type TableFooterPt= {
+  quantity:number,
+  weight:number
+}
+
+function TableFooter({quantity,weight}:TableFooterPt){
   return  <tr>
-  <td colSpan={3} className="border-2 border-black text-center h-[33px]">합계</td>
-  <td className="border-2 border-black text-center">100</td>
-  <td className="border-2 border-black text-center">2,000</td>
+  <td colSpan={4} className="border-2 border-black text-center h-[33px]">합계</td>
+  <td className="border-2 border-black text-center custom-text">{quantity}</td>
+  <td className="border-2 border-black text-center custom-text">{weight}</td>
   <td className="border-2 border-black"></td>
 </tr>
+}
+
+
+const italianRyegrass = {
+  GreenFarm: "그린팜",
+  WinterHawk: "윈터호크",
+  ED: "ED",
+  Kowinearly: "코워너리",
+  MegaPlus: "메가플러스",
+  Credence: "크레덴스",
+  Marshall: "마샬",
+  FrostProof: "FrostProof",
+  TetraStar: "테트라스타",
+  Grazer: "그레이저",
+  Tam90: "탐90",
+  Ribeye: "Ribeye",
+  NewDawn: "NewDawn",
+  Dipper: "Dipper",
+
+}
+
+const baseVariety = {
+  GreenFarm: "그린팜",
+  WinterHawk: "윈터호크",
+  ED: "ED",
+  Kowinearly: "코워너리",
+  MegaPlus: "메가플러스",
+  Credence: "크레덴스",
+  Marshall: "마샬",
+  FrostProof: "FrostProof",
+  TetraStar: "테트라스타",
+}
+
+const  rye = {
+  earlyMid: {
+    Elbon: "엘본",
+    Koolgrazer: "쿨그레이저",
+    Wintergrazer70: "윈터그레이저70",
+  },
+  midLate: {
+    Prima: "프리마",
+    Spooner: "스프너",
+  },
+}
+
+const oat = {
+  earlyMid: {
+    Swan: "스완",
+  },
+  midLate: {
+    Cassue: "카유스",
+  },
 }
