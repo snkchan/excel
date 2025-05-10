@@ -8,7 +8,7 @@ import {
   TitleDataType,
 } from "../types"
 import { convertOrderData, convertTitleData } from "./(business-logic)"
-import { ChangeEvent, Dispatch, SetStateAction, useState, useRef } from "react"
+import { ChangeEvent, Dispatch, SetStateAction, useState, useRef, useEffect } from "react"
 import { convertEngToKor, DeliveryInstrctionHeaderTitle } from "../hold"
 import { ROW_TITLE_VALUE_ARR } from "../not-comp/const"
 import { useRouter } from "next/navigation"
@@ -66,13 +66,26 @@ export default function V2() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  useEffect(() => {
+    return () => {
+      // 컴포넌트가 언마운트될 때 localStorage 정리
+      localStorage.removeItem('selectedShipments')
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 헤더 */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">출고지시서</h1>
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
+            {/* 선택된 개수 표시 */}
+            {clickedIdxArr.filter(idx => idx !== -1).length > 0 && (
+              <span className="text-blue-600 font-semibold text-base mr-2 whitespace-nowrap">
+                총 {clickedIdxArr.filter(idx => idx !== -1).length}개 선택
+              </span>
+            )}
             <UpLoadExcelBtn handleFileUpload={handleFileUpload} />
             {clickedIdxArr.length > 1 && (
               <button
@@ -80,8 +93,12 @@ export default function V2() {
                   const selectedData = clickedIdxArr
                     .filter((idx) => idx !== -1)
                     .map((idx) => excelData[idx]);
-                  const queryParam = encodeURIComponent(JSON.stringify(selectedData));
-                  window.location.href = `/v2/test?data=${queryParam}`;
+                  
+                  // localStorage에 데이터 저장
+                  localStorage.setItem('selectedShipments', JSON.stringify(selectedData));
+                  
+                  // 페이지 이동
+                  window.location.href = '/v2/test';
                 }}
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition"
               >

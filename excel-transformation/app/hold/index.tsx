@@ -8,7 +8,7 @@ export const convertEngToKor = (title: string) => {
 export function DeliveryInstrctionHeaderTitle() {
   return (
     <div className="text-4xl font-bold  flex items-center justify-center   py-4  ">
-      <div className="text-red-500/80 w-fit h-fit  ">Main 출고지시서</div>
+      <div className="text-red-500/80 w-fit h-fit  ">수입대행 출고지시서</div>
     </div>
   )
 }

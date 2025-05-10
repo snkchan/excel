@@ -31,15 +31,15 @@ export function SubTable({ data }: SubTablePT) {
         <div className="w-full flex items-center gap-x-5">
           <textarea
             className="resize-none border-2 border-gray-300 w-full text-gray-500 text-sm h-14 p-1"
-            value={`${formattedDeliveryDate} : ${text}`}
+            value={`${formattedDeliveryDate} ${text}`}
             onClick={onClickTextArea}
             onChange={(e) =>
-              setText(e.target.value.replace(`${formattedDeliveryDate} : `, ""))
+              setText(e.target.value.replace(`${formattedDeliveryDate} `, ""))
             }
           />
         </div>
       </div>
-      <div className="grid grid-rows-3 px-2 py-1">
+      <div className="grid grid-rows-3 px-2 py-1">  
         <div>{`<보세창고 출고확인>`}</div>
         <div className="flex items-center gap-x-1">
           <div className="size-[15px] rounded-full border border-black" />

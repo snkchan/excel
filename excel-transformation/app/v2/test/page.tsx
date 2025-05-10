@@ -1,35 +1,40 @@
 "use client"
 
-import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { ConvertedExcelDataType } from "@/app/types"
 import { Title } from "./(component)/Title"
 import { SubTitle } from "./(component)/SubTitle"
-
 import { SubTable } from "./(component)/SubTable"
 import { Details } from "./(component)/Details"
 import { CompanyName } from "./(component)/CompanyName"
 import { Footer } from "./(component)/Footer"
 import Table from "./(component)/Table"
-// import { Table } from "./(component)/table/Table"
 
 export default function Test() {
-  const searchParams = useSearchParams()
   const [data, setData] = useState<Array<ConvertedExcelDataType>>([])
 
   useEffect(() => {
-    const dataParam = searchParams.get("data")
-    if (dataParam) {
+    // localStorage에서 데이터 가져오기
+    const storedData = localStorage.getItem('selectedShipments')
+    if (storedData) {
       try {
-        const parsedData = JSON.parse(decodeURIComponent(dataParam))
+        const parsedData = JSON.parse(storedData)
         setData(parsedData)
       } catch (error) {
         console.error("Invalid JSON:", error)
       }
     }
-  }, [searchParams])
-  // console.log(data)
-  if (!data[0]) return
+  }, [])
+
+  // // 컴포넌트가 언마운트될 때 localStorage 정리
+  // useEffect(() => {
+  //   return () => {
+  //     localStorage.removeItem('selectedShipments')
+  //   }
+  // }, [])
+
+  if (!data[0]) return null
+
   return (
     <div className="w-full h-full flex justify-center pt-6">
       <div className="w-[794px]">
