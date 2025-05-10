@@ -97,8 +97,12 @@ export default function V2() {
                   // localStorage에 데이터 저장
                   localStorage.setItem('selectedShipments', JSON.stringify(selectedData));
                   
-                  // 페이지 이동
-                  window.location.href = '/v2/test';
+                  // 선택된 데이터 개수에 따라 다른 페이지로 이동
+                  if (selectedData.length === 1) {
+                    window.location.href = '/v2/test';
+                  } else {
+                    window.location.href = '/v2/mult';
+                  }
                 }}
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition"
               >
