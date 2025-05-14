@@ -67,21 +67,21 @@ export const convertTitleData = (
   return { sender: data[0].__EMPTY, receiver: data[1].__EMPTY }
 }
 
-/** 변환된 데이터의 초기값 */
-const createInitEngData = (): Partial<ConvertedExcelDataType> => {
-  return {
-    address: undefined,
-    associationName: undefined,
-    deliveryDate: undefined,
-    phoneNumber: undefined,
-    productName: undefined,
-    quantity: undefined,
-    recipient: undefined,
-    remarks: undefined,
-    requestDate: undefined,
-    weight: undefined,
-  }
-}
+// /** 변환된 데이터의 초기값 */
+// const createInitEngData = (): Partial<ConvertedExcelDataType> => {
+//   return {
+//     address: undefined,
+//     associationName: undefined,
+//     deliveryDate: undefined,
+//     phoneNumber: undefined,
+//     productName: undefined,
+//     quantity: undefined,
+//     recipient: undefined,
+//     remarks: undefined,
+//     requestDate: undefined,
+//     weight: undefined,
+//   }
+// }
 
 export const formatDeliveryDate = (date: string | number): string => {
   if (typeof date === "number" || typeof date === undefined) return ""

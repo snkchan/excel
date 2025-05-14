@@ -1,3 +1,7 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    // ... 다른 규칙들
+    "@typescript-eslint/no-explicit-any": "off"  // any 타입 사용 허용
+  }
 }

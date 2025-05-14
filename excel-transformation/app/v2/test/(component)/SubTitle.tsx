@@ -17,7 +17,7 @@ export function SubTitle({ data }: SbuTitlePt) {
         <span className="text-xl pb-1">:</span>
         <input
           className="text-xl font-semibold custom-text px-2 py-1 border-2 border-gray-300 w-[75%]"
-          defaultValue={address}
+          defaultValue={address ?? ""}
         />
       </div>
       <div className="flex gap-x-2 items-center py-1">

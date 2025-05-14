@@ -9,7 +9,7 @@ type TabelPT = {data:Array<ConvertedExcelDataType>}
 export default function Table({data}:TabelPT){
   
    const {weight,quantity,productName,remarks} = data[0]
-   const [remark,setRemark] = useState(remarks)
+   const [,setRemark] = useState(remarks)
   const checkbreed = (productName: string) => {
     if(productName === "Florida 80") return 0
     if(Object.keys(italianRyegrass).includes(productName)) return 1

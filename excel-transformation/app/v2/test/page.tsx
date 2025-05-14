@@ -15,6 +15,7 @@ export default function Test() {
 
   useEffect(() => {
     // localStorage에서 데이터 가져오기
+    
     const storedData = localStorage.getItem('selectedShipments')
     if (storedData) {
       try {

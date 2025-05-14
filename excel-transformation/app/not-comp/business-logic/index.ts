@@ -58,7 +58,7 @@ export const convertChangeKeyToEng = (
 }
 
 /** 변환된 데이터의 초기값 */
-const createInitEngData = (): convertedExcelDataType => {
+const createInitEngData = (): any => {
   return {
     address: null,
     associationName: null,

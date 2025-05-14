@@ -8,10 +8,9 @@ import {
   TitleDataType,
 } from "../types"
 import { convertOrderData, convertTitleData } from "./(business-logic)"
-import { ChangeEvent, Dispatch, SetStateAction, useState, useRef, useEffect } from "react"
+import { ChangeEvent, Dispatch, SetStateAction, useState,  useEffect } from "react"
 import { convertEngToKor, DeliveryInstrctionHeaderTitle } from "../hold"
 import { ROW_TITLE_VALUE_ARR } from "../not-comp/const"
-import { useRouter } from "next/navigation"
 
 export default function V2() {
   const [excelData, setExcelData] = useState<Array<ConvertedExcelDataType>>([]) // 초기값을 null로 설정
