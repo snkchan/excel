@@ -1,6 +1,6 @@
 "use client"
 import { ConvertedExcelDataType } from "@/app/types"
-import { formatDeliveryDate } from "../../(business-logic)"
+import { formatDeliveryDate } from "../../v2/(business-logic)"
 import { useState } from "react"
 
 type SubTablePT = {
