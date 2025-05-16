@@ -16,7 +16,7 @@ export function SubTitle({ data }: SbuTitlePt) {
         <span className="text-md ">공 급 조 합 명 </span>
         <span className="text-xl pb-1">:</span>
         <input
-          className="text-xl  custom-text px-2 py-1 border-2 border-gray-300 w-[75%]"
+          className="text-xl  custom-text px-2 py-1 border border-white w-[75%] "
           defaultValue={address ?? ""}
         />
       </div>
@@ -30,6 +30,6 @@ export function SubTitle({ data }: SbuTitlePt) {
 
 function Circle() {
   return (
-    <div className="min-w-[18px] size-[18px] rounded-full border border-black" />
+    <div className="min-w-[16px] size-[16px] rounded-full border border-black" />
   )
 }

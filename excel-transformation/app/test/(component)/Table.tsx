@@ -1,5 +1,6 @@
 import { ConvertedExcelDataType } from "@/app/types"
 import { useState } from "react"
+import { baseVariety, italianRyegrass, oat, rye } from "./const"
 
 type TabelPT = {data:Array<ConvertedExcelDataType>}
 
@@ -8,19 +9,23 @@ type TabelPT = {data:Array<ConvertedExcelDataType>}
 
 export default function Table({data}:TabelPT){
   
+
    const {weight,quantity,productName,remarks} = data[0]
    const [,setRemark] = useState(remarks)
   const checkbreed = (productName: string) => {
+   const normalizedProductName = normalizeProductName(productName as string)
     if(productName === "Florida 80") return 0
-    if(Object.keys(italianRyegrass).includes(productName)) return 1
-    if([ ...Object.keys(rye.earlyMid)].includes(productName)) return 2
-    if([ ...Object.keys(rye.midLate)].includes(productName)) return 3
-    if([ ...Object.keys(oat.earlyMid)].includes(productName)) return 4
-    if([ ...Object.keys(oat.midLate)].includes(productName)) return 5
+    if(Object.keys(italianRyegrass).includes(normalizedProductName)) return 1
+    if([ ...Object.keys(rye.earlyMid)].includes(normalizedProductName)) return 2
+    if([ ...Object.keys(rye.midLate)].includes(normalizedProductName)) return 3
+    if([ ...Object.keys(oat.earlyMid)].includes(normalizedProductName)) return 4
+    if([ ...Object.keys(oat.midLate)].includes(normalizedProductName)) return 5
     return -1
   }
-  const breedNum = checkbreed(productName as string)
 
+
+  const breedNum = checkbreed(productName as string)
+  
   return <table className="w-full border-2 border-black border-collapse">
   <TableHeader/>
   <tbody>
@@ -32,16 +37,28 @@ export default function Table({data}:TabelPT){
 </table>
 }
 
+const normalizeProductName = (productName: string): string => {
+  const pn = productName.trim().toLowerCase();
+  for (const key of Object.keys(italianRyegrass)) {
+    const k = key.trim().toLowerCase();
+    // key로 시작하고, 그 뒤에 숫자만 붙어있는지 확인
+    const match = pn.match(new RegExp(`^${k}(\\d+)$`));
+    if (match) {
+      return key; // 원래의 key(대소문자, 한글 등 보존)
+    }
+  }
+  return productName;
+}
 
 function TableHeader(){
   return  <><colgroup>
-  <col style={{ width: "3%" }} />    {/* 구분 */}
-  <col style={{ width: "20.3%" }} />  {/* 초종명 */}
-  <col style={{ width: "10.3%" }} />  {/* 숙기 */}
-  <col style={{ width: "16.4%" }} />  {/* 품종명 */}
-  <col style={{ width: "10.6%" }} />  {/* 포 */}
-  <col style={{ width: "10.6%" }} />  {/* KG */}
-  <col style={{ width: "28.8%" }} />  {/* 선하증권 */}
+  <col style={{ width: "3%" }} />
+  <col style={{ width: "20.3%" }} />
+  <col style={{ width: "10.3%" }} />
+  <col style={{ width: "16.4%" }} />
+  <col style={{ width: "10.6%" }} />
+  <col style={{ width: "10.6%" }} />
+  <col style={{ width: "28.8%" }} />
 </colgroup>
 <thead>
   <tr>
@@ -74,7 +91,7 @@ function FeedDetailRow({quantity, weight, remark, setRemark}: FeedDetailRowPT) {
     <td className="border-[1px] border-black text-center custom-text">{weight}</td>
     <td className="border-[1px] border-black p-0 ">
       <input 
-        className="w-full h-full  border-none outline-none text-[10px] text-semibold custom-text pl-2  " 
+        className="w-full h-full  border-none outline-none  text-semibold text-red-500 text-[14px] pl-1  " 
         defaultValue={remark ?? ""} 
         onChange={(e) => setRemark(e.target.value)}
       />
@@ -90,7 +107,8 @@ type ItalianRyegrassPT= {
 }
 
 function ItalianRyegrass({data,breedNum,setRemark}:ItalianRyegrassPT){
-  const {quantity,weight,productName,remarks} = data[0]
+  const {quantity,weight,productName:pn,remarks} = data[0]
+  const productName = normalizeProductName(pn as string)
   return <> <tr>
   <td rowSpan={16} className="border-[1px] border-black text-center align-middle">사<br/><br/><br/>료</td>
   <td rowSpan={12} colSpan={2} className="border-[1px] border-black text-center align-middle">
@@ -181,7 +199,7 @@ function Rye({breedNum,data,setRemark}:RyePT){
   </td>
   <td className="border-[1px] border-black text-center h-[28px]">조/중생</td>
   <td className="border-[1px] border-black text-start pl-1 ">
-    {isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
+    {isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? rye.earlyMid[productName as keyof typeof rye.earlyMid] : ""}
   </td>
   <FeedDetailRow 
     quantity={isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? quantity : undefined} 
@@ -193,7 +211,7 @@ function Rye({breedNum,data,setRemark}:RyePT){
 <tr>
   <td className="border-[1px] border-black text-center h-[28px]">만생</td>
   <td className="border-[1px] border-black text-start pl-1">
-    {isMidLate(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
+    {isMidLate(breedNum) && isMatchingVariety(productName as string) ? rye.midLate[productName as keyof typeof rye.midLate] : ""}
   </td>
   <FeedDetailRow 
     quantity={isMidLate(breedNum) && isMatchingVariety(productName as string) ? quantity : undefined} 
@@ -239,7 +257,7 @@ function Oats({data,breedNum,setRemark}:OatsPT){
   </td>
   <td className="border-[1px] border-black text-center h-[28px]">조생</td>
   <td className="border-[1px] border-black text-start pl-1">
-    {isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
+    {isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? oat.earlyMid[productName as keyof typeof oat.earlyMid] : ""}
   </td>
   <FeedDetailRow 
     quantity={isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? quantity : undefined} 
@@ -251,7 +269,7 @@ function Oats({data,breedNum,setRemark}:OatsPT){
 <tr>
   <td className="border-[1px] border-black text-center h-[28px]">중/만생</td>
   <td className="border-[1px] border-black text-start pl-1">
-    {isMidLate(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
+    {isMidLate(breedNum) && isMatchingVariety(productName as string) ? oat.midLate[productName as keyof typeof oat.midLate] : ""}
   </td>
   <FeedDetailRow 
     quantity={isMidLate(breedNum) && isMatchingVariety(productName as string) ? quantity : undefined} 
@@ -278,53 +296,3 @@ function TableFooter({quantity,weight}:TableFooterPt){
 }
 
 
-const italianRyegrass = {
-  GreenFarm: "그린팜",
-  WinterHawk: "윈터호크",
-  ED: "ED",
-  Kowinearly: "코워너리",
-  MegaPlus: "메가플러스",
-  Credence: "크레덴스",
-  Marshall: "마샬",
-  FrostProof: "FrostProof",
-  TetraStar: "테트라스타",
-  Grazer: "그레이저",
-  Tam90: "탐90",
-  Ribeye: "Ribeye",
-  NewDawn: "NewDawn",
-  Dipper: "Dipper",
-
-}
-
-const baseVariety = {
-  GreenFarm: "그린팜",
-  WinterHawk: "윈터호크",
-  ED: "ED",
-  Kowinearly: "코워너리",
-  MegaPlus: "메가플러스",
-  Credence: "크레덴스",
-  Marshall: "마샬",
-  FrostProof: "FrostProof",
-  TetraStar: "테트라스타",
-}
-
-const  rye = {
-  earlyMid: {
-    Elbon: "엘본",
-    Koolgrazer: "쿨그레이저",
-    Wintergrazer70: "윈터그레이저70",
-  },
-  midLate: {
-    Prima: "프리마",
-    Spooner: "스프너",
-  },
-}
-
-const oat = {
-  earlyMid: {
-    Swan: "스완",
-  },
-  midLate: {
-    Cassue: "카유스",
-  },
-}

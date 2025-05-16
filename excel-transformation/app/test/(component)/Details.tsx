@@ -33,7 +33,7 @@ export function Details({ data }: DetailsPT) {
         </p>
       </div>
       <div className="w-full flex items-end justify-end ">
-        <table className="w-[18rem] h-[100px] table-fixed border-2 border-black grid-rows-3 border-collapse">
+        <table className="w-[18rem] h-[100px] table-fixed border border-black grid-rows-3 border-collapse">
           <tbody>
             <tr className="grid grid-cols-[1fr_1.3fr] w-full h-full border-collapse">
               <td className="w-full flex items-center justify-center table-border  tracking-[.5rem]">

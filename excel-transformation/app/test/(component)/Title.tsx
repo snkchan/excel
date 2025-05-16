@@ -17,8 +17,8 @@ export function Title({ data }: TitlePt) {
         수입대행 종자 인수증
       </p>
       <div className="text-base flex flex-col items-center justify-center h-full custom-text break-keep text-center">
-        <p>{recipient}</p>
-        <p>{phoneNumber}</p>
+        <p className="text-[14px]">{recipient}</p>
+        <p className="text-[14px]">{phoneNumber}</p>
       </div>
     </div>
   )
