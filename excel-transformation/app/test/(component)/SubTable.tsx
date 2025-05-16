@@ -48,7 +48,7 @@ export function SubTable({ data }: SubTablePT) {
         <div className="flex items-center gap-x-1">
           <div className="size-[15px] rounded-full border border-black" />
           <div className="flex w-full items-center justify-between pr-2">
-            <p>출고 확인자 :</p>
+            <p>출고확인자 :</p>
             <p>(인)</p>
           </div>
         </div>

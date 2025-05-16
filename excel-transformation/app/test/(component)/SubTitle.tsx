@@ -13,20 +13,16 @@ export function SubTitle({ data }: SbuTitlePt) {
     <>
       <div className="flex gap-x-2 items-center pt-1 mt-6">
         <Circle />
-        <span className="text-lg ">공 급 조 합 명 </span>
+        <span className="text-md ">공 급 조 합 명 </span>
         <span className="text-xl pb-1">:</span>
         <input
-          className="text-xl font-semibold custom-text px-2 py-1 border-2 border-gray-300 w-[75%]"
+          className="text-xl  custom-text px-2 py-1 border-2 border-gray-300 w-[75%]"
           defaultValue={address ?? ""}
         />
       </div>
       <div className="flex gap-x-2 items-center py-1">
         <Circle />
-        <span className="text-lg min-w-[10rem]">공 급 내 역 </span>
-        <p className="flex w-full justify-end font-bold text-lg pr-2">
-          (주) NH무역 보관용[1]
-        </p>
-        {/** 글자 크기, 폰트. [1]은 무슨의미인지?  */}
+        <span className="text-md min-w-[10rem]">공 급 내 역</span>
       </div>
     </>
   )

@@ -22,7 +22,30 @@ export default function Table({data}:TabelPT){
   const breedNum = checkbreed(productName as string)
 
   return <table className="w-full border-2 border-black border-collapse">
-  <TableHeader/>
+  <colgroup>
+    <col style={{ width: "3%" }} />    {/* 구분 */}
+    <col style={{ width: "20.3%" }} />  {/* 초종명 */}
+    <col style={{ width: "10.3%" }} />  {/* 숙기 */}
+    <col style={{ width: "16.4%" }} />  {/* 품종명 */}
+    <col style={{ width: "10.6%" }} />  {/* 포 */}
+    <col style={{ width: "10.6%" }} />  {/* KG */}
+    <col style={{ width: "28.8%" }} />  {/* 선하증권 */}
+  </colgroup>
+  <thead>
+    <tr>
+      <th rowSpan={2} className="border-[1px] border-black w-[30px] text-center">구<br/>분</th>
+      <th colSpan={3} className="border-[1px] border-black text-center">공 급 내 역</th>
+      <th colSpan={2} className="border-[1px] border-black text-center">공급수량</th>
+      <th rowSpan={2} className="border-[1px] border-black w-[170px] text-center">선하증권</th>
+    </tr>
+    <tr>
+      <th className="border-[1px] border-black text-center min-w-[100px]">초종명</th>
+      <th className="border-[1px] border-black text-center">숙기</th>
+      <th className="border-[1px] border-black text-center">품종명</th>
+      <th className="border-[1px] border-black text-center min-w-[30px]">포</th>
+      <th className="border-[1px] border-black text-center min-w-[30px]">KG</th>
+    </tr>
+  </thead>
   <tbody>
    <ItalianRyegrass data={data} breedNum={breedNum} setRemark={setRemark} />
    <Rye data={data} breedNum={breedNum} setRemark={setRemark}/>
@@ -35,18 +58,18 @@ export default function Table({data}:TabelPT){
 
 function TableHeader(){
   return  <thead>
-  <tr>
-    <th rowSpan={2} className="border-2 border-black w-[30px] text-center">구<br/>분</th>
-    <th colSpan={3} className="border-2 border-black text-center">공 급 내 역</th>
-    <th colSpan={2} className="border-2 border-black text-center">공급수량</th>
-    <th rowSpan={2} className="border-2 border-black w-[170px] text-center">선하증권</th>
+  <tr >
+    <th rowSpan={2} className="border-[1px] border-black w-[30px] text-center ">구<br/>분</th>
+    <th colSpan={3} className="border-[1px] border-black text-center ">공 급 내 역</th>
+    <th colSpan={2} className="border-[1px] border-black text-center">공급수량</th>
+    <th rowSpan={2} className="border-[1px] border-black w-[170px] text-center">선하증권</th>
   </tr>
   <tr>
-    <th className="border-2 border-black text-center">초종명</th>
-    <th className="border-2 border-black text-center">숙기</th>
-    <th className="border-2 border-black text-center">품종명</th>
-    <th className="border-2 border-black text-center">포</th>
-    <th className="border-2 border-black text-center">KG</th>
+    <th className="border-[1px] border-black text-center min-w-[100px]">초종명</th>
+    <th className="border-[1px] border-black text-center">숙기</th>
+    <th className="border-[1px] border-black text-center">품종명</th>
+    <th className="border-[1px] border-black text-center min-w-[30px]">포</th>
+    <th className="border-[1px] border-black text-center min-w-[30px]">KG</th>
   </tr>
 </thead>
 }
@@ -61,11 +84,11 @@ type FeedDetailRowPT = {
 
 function FeedDetailRow({quantity, weight, remark, setRemark}: FeedDetailRowPT) {
   return <>
-    <td className="border-2 border-black text-center custom-text">{quantity}</td>
-    <td className="border-2 border-black text-center custom-text">{weight}</td>
-    <td className="border-2 border-black p-0 ">
+    <td className="border-[1px] border-black text-center custom-text">{quantity}</td>
+    <td className="border-[1px] border-black text-center custom-text">{weight}</td>
+    <td className="border-[1px] border-black p-0 ">
       <input 
-        className="w-full h-full  border-none outline-none text-[10px] text-semibold custom-text  " 
+        className="w-full h-full  border-none outline-none text-[10px] text-semibold custom-text pl-2  " 
         defaultValue={remark ?? ""} 
         onChange={(e) => setRemark(e.target.value)}
       />
@@ -83,11 +106,11 @@ type ItalianRyegrassPT= {
 function ItalianRyegrass({data,breedNum,setRemark}:ItalianRyegrassPT){
   const {quantity,weight,productName,remarks} = data[0]
   return <> <tr>
-  <td rowSpan={16} className="border-2 border-black text-center align-middle">사<br/><br/><br/>료</td>
-  <td rowSpan={12} colSpan={2} className="border-2 border-black text-center align-middle">
+  <td rowSpan={16} className="border-[1px] border-black text-center align-middle">사<br/><br/><br/>료</td>
+  <td rowSpan={12} colSpan={2} className="border-[1px] border-black text-center align-middle">
     이탈리안<br />라이그라스<br />20Kg
   </td>
-  <td className="border-2 border-black text-center h-[33px]">플로리다80</td>
+  <td className="border-[1px] border-black text-start h-[31px] pl-1">플로리다80</td>
   <FeedDetailRow 
     quantity={breedNum === 0 ? quantity : undefined} 
     weight={breedNum === 0 ? weight : undefined}
@@ -125,7 +148,7 @@ function ItalianRyegrass({data,breedNum,setRemark}:ItalianRyegrassPT){
     return idx === 9
   }
   return  <tr key={idx}>
-  <td className="border-2 border-black text-center h-[33px]">
+  <td className="border-[1px] border-black text-start pl-1 h-[31px]">
     { breedNum === -1 && !hasVariety(productName as string) && isEmptyCell(idx) ? productName : variety}
   </td>
    <FeedDetailRow 
@@ -167,11 +190,11 @@ function Rye({breedNum,data,setRemark}:RyePT){
   }
 
   return <> <tr>
-  <td rowSpan={2} className="border-2 border-black text-center align-middle">
-    호밀<br />20Kg
+  <td rowSpan={2} className="border-[1px] border-black text-center align-middle">
+    호밀 20Kg
   </td>
-  <td className="border-2 border-black text-center">조/중생</td>
-  <td className="border-2 border-black text-center">
+  <td className="border-[1px] border-black text-center h-[31px]">조/중생</td>
+  <td className="border-[1px] border-black text-start pl-1 ">
     {isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
   </td>
   <FeedDetailRow 
@@ -182,8 +205,8 @@ function Rye({breedNum,data,setRemark}:RyePT){
   />
 </tr>
 <tr>
-  <td className="border-2 border-black text-center">만생</td>
-  <td className="border-2 border-black text-center">
+  <td className="border-[1px] border-black text-center h-[31px]">만생</td>
+  <td className="border-[1px] border-black text-start pl-1">
     {isMidLate(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
   </td>
   <FeedDetailRow 
@@ -225,11 +248,11 @@ function Oats({data,breedNum,setRemark}:OatsPT){
   }
 
   return <> <tr>
-  <td rowSpan={2} className="border-2 border-black text-center align-middle">
-    연맥<br />20Kg
+  <td rowSpan={2} className="border-[1px] border-black text-center align-middle">
+    연맥 20Kg
   </td>
-  <td className="border-2 border-black text-center">조생</td>
-  <td className="border-2 border-black text-center">
+  <td className="border-[1px] border-black text-center h-[31px]">조생</td>
+  <td className="border-[1px] border-black text-start pl-1">
     {isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
   </td>
   <FeedDetailRow 
@@ -240,8 +263,8 @@ function Oats({data,breedNum,setRemark}:OatsPT){
   />
 </tr>
 <tr>
-  <td className="border-2 border-black text-center">중/만생</td>
-  <td className="border-2 border-black text-center">
+  <td className="border-[1px] border-black text-center h-[31px]">중/만생</td>
+  <td className="border-[1px] border-black text-start pl-1">
     {isMidLate(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
   </td>
   <FeedDetailRow 
@@ -261,10 +284,10 @@ type TableFooterPt= {
 
 function TableFooter({quantity,weight}:TableFooterPt){
   return  <tr>
-  <td colSpan={4} className="border-2 border-black text-center h-[33px]">합계</td>
-  <td className="border-2 border-black text-center custom-text">{quantity}</td>
-  <td className="border-2 border-black text-center custom-text">{weight}</td>
-  <td className="border-2 border-black"></td>
+  <td colSpan={4} className="border-[1px] border-black text-center h-[31px]">합계</td>
+  <td className="border-[1px] border-black text-center custom-text">{quantity}</td>
+  <td className="border-[1px] border-black text-center custom-text">{weight}</td>
+  <td className="border-[1px] border-black"></td>
 </tr>
 }
 
