@@ -1,19 +1,73 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { ConvertedExcelDataType } from "@/app/types"
+import { useReactToPrint } from 'react-to-print'
 
+import Table, { normalizeProductName } from "./(component)/Table"
+import { italianRyegrass, oat, rye } from "../test/(component)/const"
+import { Title } from "../test/(component)/Title"
+import { SubTitle } from "./(component)/SubTitle"
 import { SubTable } from "../test/(component)/SubTable"
 import { Details } from "../test/(component)/Details"
 import { CompanyName } from "../test/(component)/CompanyName"
 import { Footer } from "../test/(component)/Footer"
-import { italianRyegrass, oat, rye } from "../test/(component)/const"
-import { SubTitle } from "./(component)/SubTitle"
-import Table, { normalizeProductName } from "./(component)/Table"
 
 export default function MultPage() {
   const [data, setData] = useState<Array<ConvertedExcelDataType>>([])
   const [page, setPage] = useState(0) // 0: 목록, 1: 테이블
+  const listPrintRef = useRef<HTMLDivElement>(null)
+  const tablePrintRef = useRef<HTMLDivElement>(null)
+
+  // 목록 페이지 프린트 핸들러
+  const handleListPrint = useReactToPrint({
+    contentRef: listPrintRef,
+    documentTitle: "인수증 목록",
+    pageStyle: `
+      @page {
+        size: A4;
+        margin: 5mm;
+      }
+      @media print {
+        body {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        button {
+          display: none !important;
+        }
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+      }
+    `,
+  })
+
+  // 테이블 페이지 프린트 핸들러
+  const handleTablePrint = useReactToPrint({
+    contentRef: tablePrintRef,
+    documentTitle: "인수증",
+    pageStyle: `
+      @page {
+        size: A4;
+        margin: 5mm;
+      }
+      @media print {
+        body {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        button {
+          display: none !important;
+        }
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+      }
+    `,
+  })
 
   useEffect(() => {
     const storedData = localStorage.getItem('selectedShipments')
@@ -25,6 +79,12 @@ export default function MultPage() {
       } catch (error) {
         console.error("Invalid JSON:", error)
       }
+    }
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem('selectedShipments')
     }
   }, [])
 
@@ -43,11 +103,17 @@ export default function MultPage() {
             >
               {page === 0 ? "인수증 보기" : "목록으로 돌아가기"}
             </button>
+            <button 
+              onClick={page === 0 ? handleListPrint : handleTablePrint}
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+            >
+              인쇄하기
+            </button>
           </div>
         </div>
 
         {page === 0 ? (
-          <div className="overflow-x-auto">
+          <div ref={listPrintRef} className="overflow-x-auto">
             <table className="min-w-full border border-gray-300 text-center">
               <thead>
                 <tr className="bg-yellow-100">
@@ -78,13 +144,16 @@ export default function MultPage() {
             </table>
           </div>
         ) : (
-          <div className="mt-12 w-[794px] mx-auto">
-            <SubTitle data={data}/>
+          <div className="flex justify-center">
+          <div ref={tablePrintRef} className="w-[900px]">
+            <Title data={data} />
+            <SubTitle data={data} />
             <Table data={data} />
             <SubTable data={data} />
             <Details data={data} />
             <CompanyName />
             <Footer />
+          </div>
           </div>
         )}
       </div>
