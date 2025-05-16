@@ -8,8 +8,6 @@ type TabelPT = {data:Array<ConvertedExcelDataType>}
 
 
 export default function Table({data}:TabelPT){
-  
-
    const {weight,quantity,productName,remarks} = data[0]
    const [,setRemark] = useState(remarks)
   const checkbreed = (productName: string) => {
@@ -37,7 +35,7 @@ export default function Table({data}:TabelPT){
 </table>
 }
 
-const normalizeProductName = (productName: string): string => {
+export const normalizeProductName = (productName: string): string => {
   const pn = productName.trim().toLowerCase();
   for (const key of Object.keys(italianRyegrass)) {
     const k = key.trim().toLowerCase();
