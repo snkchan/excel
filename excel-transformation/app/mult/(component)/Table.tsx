@@ -248,7 +248,18 @@ function Rye({ data, remarks: remarksObj, setRemark }: RyePT) {
   });
   const earlyMidQuantity = earlyMidArr.reduce((acc, cur) => acc + (cur.quantity ?? 0), 0);
   const earlyMidWeight = earlyMidArr.reduce((acc, cur) => acc + (cur.weight ?? 0), 0);
-  const earlyMidRemarks = remarksObj["Elbon"] || "";
+  
+  // 중복 제거된 remarks
+  const earlyMidRemarks = earlyMidArr
+    .map(item => item.remarks)
+    .filter(Boolean)
+    .reduce((acc, cur) => {
+      if (cur && !acc.includes(cur)) {
+        acc.push(cur);
+      }
+      return acc;
+    }, [] as string[])
+    .join(", ") || remarksObj["Elbon"] || "";
 
   // 만생(midLate)
   const midLateArr = data.filter(item => {
@@ -257,7 +268,18 @@ function Rye({ data, remarks: remarksObj, setRemark }: RyePT) {
   });
   const midLateQuantity = midLateArr.reduce((acc, cur) => acc + (cur.quantity ?? 0), 0);
   const midLateWeight = midLateArr.reduce((acc, cur) => acc + (cur.weight ?? 0), 0);
-  const midLateRemarks = remarksObj["Prima"] || "";
+  
+  // 중복 제거된 remarks
+  const midLateRemarks = midLateArr
+    .map(item => item.remarks)
+    .filter(Boolean)
+    .reduce((acc, cur) => {
+      if (cur && !acc.includes(cur)) {
+        acc.push(cur);
+      }
+      return acc;
+    }, [] as string[])
+    .join(", ") || remarksObj["Prima"] || "";
 
   return (
     <>
@@ -306,7 +328,18 @@ function Oats({ data, remarks: remarksObj, setRemark }: OatsPT) {
   });
   const earlyMidQuantity = earlyMidArr.reduce((acc, cur) => acc + (cur.quantity ?? 0), 0);
   const earlyMidWeight = earlyMidArr.reduce((acc, cur) => acc + (cur.weight ?? 0), 0);
-  const earlyMidRemarks = remarksObj["Swan"] || "";
+  
+  // 중복 제거된 remarks
+  const earlyMidRemarks = earlyMidArr
+    .map(item => item.remarks)
+    .filter(Boolean)
+    .reduce((acc, cur) => {
+      if (cur && !acc.includes(cur)) {
+        acc.push(cur);
+      }
+      return acc;
+    }, [] as string[])
+    .join(", ") || remarksObj["Swan"] || "";
 
   // 중/만생(midLate)
   const midLateArr = data.filter(item => {
@@ -315,7 +348,18 @@ function Oats({ data, remarks: remarksObj, setRemark }: OatsPT) {
   });
   const midLateQuantity = midLateArr.reduce((acc, cur) => acc + (cur.quantity ?? 0), 0);
   const midLateWeight = midLateArr.reduce((acc, cur) => acc + (cur.weight ?? 0), 0);
-  const midLateRemarks = remarksObj["Cassue"] || "";
+  
+  // 중복 제거된 remarks
+  const midLateRemarks = midLateArr
+    .map(item => item.remarks)
+    .filter(Boolean)
+    .reduce((acc, cur) => {
+      if (cur && !acc.includes(cur)) {
+        acc.push(cur);
+      }
+      return acc;
+    }, [] as string[])
+    .join(", ") || remarksObj["Cassue"] || "";
 
   return (
     <>
