@@ -22,30 +22,7 @@ export default function Table({data}:TabelPT){
   const breedNum = checkbreed(productName as string)
 
   return <table className="w-full border-2 border-black border-collapse">
-  <colgroup>
-    <col style={{ width: "3%" }} />    {/* 구분 */}
-    <col style={{ width: "20.3%" }} />  {/* 초종명 */}
-    <col style={{ width: "10.3%" }} />  {/* 숙기 */}
-    <col style={{ width: "16.4%" }} />  {/* 품종명 */}
-    <col style={{ width: "10.6%" }} />  {/* 포 */}
-    <col style={{ width: "10.6%" }} />  {/* KG */}
-    <col style={{ width: "28.8%" }} />  {/* 선하증권 */}
-  </colgroup>
-  <thead>
-    <tr>
-      <th rowSpan={2} className="border-[1px] border-black w-[30px] text-center">구<br/>분</th>
-      <th colSpan={3} className="border-[1px] border-black text-center">공 급 내 역</th>
-      <th colSpan={2} className="border-[1px] border-black text-center">공급수량</th>
-      <th rowSpan={2} className="border-[1px] border-black w-[170px] text-center">선하증권</th>
-    </tr>
-    <tr>
-      <th className="border-[1px] border-black text-center min-w-[100px]">초종명</th>
-      <th className="border-[1px] border-black text-center">숙기</th>
-      <th className="border-[1px] border-black text-center">품종명</th>
-      <th className="border-[1px] border-black text-center min-w-[30px]">포</th>
-      <th className="border-[1px] border-black text-center min-w-[30px]">KG</th>
-    </tr>
-  </thead>
+  <TableHeader/>
   <tbody>
    <ItalianRyegrass data={data} breedNum={breedNum} setRemark={setRemark} />
    <Rye data={data} breedNum={breedNum} setRemark={setRemark}/>
@@ -57,10 +34,19 @@ export default function Table({data}:TabelPT){
 
 
 function TableHeader(){
-  return  <thead>
-  <tr >
-    <th rowSpan={2} className="border-[1px] border-black w-[30px] text-center ">구<br/>분</th>
-    <th colSpan={3} className="border-[1px] border-black text-center ">공 급 내 역</th>
+  return  <><colgroup>
+  <col style={{ width: "3%" }} />    {/* 구분 */}
+  <col style={{ width: "20.3%" }} />  {/* 초종명 */}
+  <col style={{ width: "10.3%" }} />  {/* 숙기 */}
+  <col style={{ width: "16.4%" }} />  {/* 품종명 */}
+  <col style={{ width: "10.6%" }} />  {/* 포 */}
+  <col style={{ width: "10.6%" }} />  {/* KG */}
+  <col style={{ width: "28.8%" }} />  {/* 선하증권 */}
+</colgroup>
+<thead>
+  <tr>
+    <th rowSpan={2} className="border-[1px] border-black w-[30px] text-center">구<br/>분</th>
+    <th colSpan={3} className="border-[1px] border-black text-center">공 급 내 역</th>
     <th colSpan={2} className="border-[1px] border-black text-center">공급수량</th>
     <th rowSpan={2} className="border-[1px] border-black w-[170px] text-center">선하증권</th>
   </tr>
@@ -71,7 +57,7 @@ function TableHeader(){
     <th className="border-[1px] border-black text-center min-w-[30px]">포</th>
     <th className="border-[1px] border-black text-center min-w-[30px]">KG</th>
   </tr>
-</thead>
+</thead></>
 }
 
 
