@@ -8,6 +8,8 @@ type TabelPT = {data:Array<ConvertedExcelDataType>}
 
 
 export default function Table({data}:TabelPT){
+  
+
    const {weight,quantity,productName,remarks} = data[0]
    const [,setRemark] = useState(remarks)
   const checkbreed = (productName: string) => {

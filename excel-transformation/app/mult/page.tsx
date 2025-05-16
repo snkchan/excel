@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react"
 import { ConvertedExcelDataType } from "@/app/types"
-import Table, { normalizeProductName } from "../test/(component)/Table"
+
 import { SubTable } from "../test/(component)/SubTable"
 import { Details } from "../test/(component)/Details"
 import { CompanyName } from "../test/(component)/CompanyName"
 import { Footer } from "../test/(component)/Footer"
 import { italianRyegrass, oat, rye } from "../test/(component)/const"
-import { SubTitle } from "../test/(component)/SubTitle"
+import { SubTitle } from "./(component)/SubTitle"
+import Table, { normalizeProductName } from "./(component)/Table"
 
 export default function MultPage() {
   const [data, setData] = useState<Array<ConvertedExcelDataType>>([])
@@ -58,7 +59,7 @@ export default function MultPage() {
             <tbody>
               {data.map((item, idx) => (
                 <tr key={idx} className="hover:bg-gray-50">
-                  <td className="border border-gray-300 px-2 py-1">{idx+1}</td>
+                  <td className="border border-gray-300 px-2 py-1 text-gray-500 font-bold">{idx+1}</td>
                   <td className="border border-gray-300 px-2 py-1 font-bold text-gray-800">{item.recipient}</td>
                   <td className="border border-gray-300 px-2 py-1">{item.phoneNumber}</td>
                   <td className="border border-gray-300 px-2 py-1 text-left">{item.address}</td>
