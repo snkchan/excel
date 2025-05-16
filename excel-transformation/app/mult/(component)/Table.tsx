@@ -242,17 +242,19 @@ type RyePT = {
 
 function Rye({ data, remarks: remarksObj, setRemark }: RyePT) {
   // 조/중생(earlyMid)
-  const earlyMidArr = data.filter(item =>
-    checkbreed(normalizeProductName(item.productName as string)) === 2
-  );
+  const earlyMidArr = data.filter(item => {
+    const breedNum = checkbreed(normalizeProductName(item.productName as string));
+    return breedNum === 2 && Object.keys(rye.earlyMid).includes(normalizeProductName(item.productName as string));
+  });
   const earlyMidQuantity = earlyMidArr.reduce((acc, cur) => acc + (cur.quantity ?? 0), 0);
   const earlyMidWeight = earlyMidArr.reduce((acc, cur) => acc + (cur.weight ?? 0), 0);
   const earlyMidRemarks = remarksObj["Elbon"] || "";
 
   // 만생(midLate)
-  const midLateArr = data.filter(item =>
-    checkbreed(normalizeProductName(item.productName as string)) === 3
-  );
+  const midLateArr = data.filter(item => {
+    const breedNum = checkbreed(normalizeProductName(item.productName as string));
+    return breedNum === 3 && Object.keys(rye.midLate).includes(normalizeProductName(item.productName as string));
+  });
   const midLateQuantity = midLateArr.reduce((acc, cur) => acc + (cur.quantity ?? 0), 0);
   const midLateWeight = midLateArr.reduce((acc, cur) => acc + (cur.weight ?? 0), 0);
   const midLateRemarks = remarksObj["Prima"] || "";
@@ -262,7 +264,9 @@ function Rye({ data, remarks: remarksObj, setRemark }: RyePT) {
       <tr>
         <td rowSpan={2} className="border-[1px] border-black text-center align-middle">호밀 20Kg</td>
         <td className="border-[1px] border-black text-center h-[28px]">조/중생</td>
-        <td className="border-[1px] border-black text-start pl-1">{rye.earlyMid.Elbon}</td>
+        <td className="border-[1px] border-black text-start pl-1">
+          {earlyMidArr.length > 0 ? rye.earlyMid.Elbon : ""}
+        </td>
         <FeedDetailRow
           quantity={earlyMidQuantity ? Number(earlyMidQuantity) : null}
           weight={earlyMidWeight ? Number(earlyMidWeight) : null}
@@ -272,7 +276,9 @@ function Rye({ data, remarks: remarksObj, setRemark }: RyePT) {
       </tr>
       <tr>
         <td className="border-[1px] border-black text-center h-[28px]">만생</td>
-        <td className="border-[1px] border-black text-start pl-1">{rye.midLate.Prima}</td>
+        <td className="border-[1px] border-black text-start pl-1">
+          {midLateArr.length > 0 ? rye.midLate.Prima : ""}
+        </td>
         <FeedDetailRow
           quantity={midLateQuantity ? Number(midLateQuantity) : null}
           weight={midLateWeight ? Number(midLateWeight) : null}
@@ -294,17 +300,19 @@ type OatsPT = {
 
 function Oats({ data, remarks: remarksObj, setRemark }: OatsPT) {
   // 조생(earlyMid)
-  const earlyMidArr = data.filter(item =>
-    checkbreed(normalizeProductName(item.productName as string)) === 4
-  );
+  const earlyMidArr = data.filter(item => {
+    const breedNum = checkbreed(normalizeProductName(item.productName as string));
+    return breedNum === 4 && Object.keys(oat.earlyMid).includes(normalizeProductName(item.productName as string));
+  });
   const earlyMidQuantity = earlyMidArr.reduce((acc, cur) => acc + (cur.quantity ?? 0), 0);
   const earlyMidWeight = earlyMidArr.reduce((acc, cur) => acc + (cur.weight ?? 0), 0);
   const earlyMidRemarks = remarksObj["Swan"] || "";
 
   // 중/만생(midLate)
-  const midLateArr = data.filter(item =>
-    checkbreed(normalizeProductName(item.productName as string)) === 5
-  );
+  const midLateArr = data.filter(item => {
+    const breedNum = checkbreed(normalizeProductName(item.productName as string));
+    return breedNum === 5 && Object.keys(oat.midLate).includes(normalizeProductName(item.productName as string));
+  });
   const midLateQuantity = midLateArr.reduce((acc, cur) => acc + (cur.quantity ?? 0), 0);
   const midLateWeight = midLateArr.reduce((acc, cur) => acc + (cur.weight ?? 0), 0);
   const midLateRemarks = remarksObj["Cassue"] || "";
@@ -314,7 +322,9 @@ function Oats({ data, remarks: remarksObj, setRemark }: OatsPT) {
       <tr>
         <td rowSpan={2} className="border-[1px] border-black text-center align-middle">연맥 20Kg</td>
         <td className="border-[1px] border-black text-center h-[28px]">조생</td>
-        <td className="border-[1px] border-black text-start pl-1">{oat.earlyMid.Swan}</td>
+        <td className="border-[1px] border-black text-start pl-1">
+          {earlyMidArr.length > 0 ? oat.earlyMid.Swan : ""}
+        </td>
         <FeedDetailRow
           quantity={earlyMidQuantity ? Number(earlyMidQuantity) : null}
           weight={earlyMidWeight ? Number(earlyMidWeight) : null}
@@ -324,7 +334,9 @@ function Oats({ data, remarks: remarksObj, setRemark }: OatsPT) {
       </tr>
       <tr>
         <td className="border-[1px] border-black text-center h-[28px]">중/만생</td>
-        <td className="border-[1px] border-black text-start pl-1">{oat.midLate.Cassue}</td>
+        <td className="border-[1px] border-black text-start pl-1">
+          {midLateArr.length > 0 ? oat.midLate.Cassue : ""}
+        </td>
         <FeedDetailRow
           quantity={midLateQuantity ? Number(midLateQuantity) : null}
           weight={midLateWeight ? Number(midLateWeight) : null}
