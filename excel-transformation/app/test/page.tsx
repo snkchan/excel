@@ -37,7 +37,7 @@ export default function Test() {
   if (!data[0]) return null
 
   return (
-    <div className="w-full h-full flex justify-center pt-6">
+    <div className="w-full h-full flex justify-center pt-2">
       <div className="w-[794px]">
         <Title data={data} />
         <SubTitle data={data} />

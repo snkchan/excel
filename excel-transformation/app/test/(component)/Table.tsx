@@ -96,7 +96,7 @@ function ItalianRyegrass({data,breedNum,setRemark}:ItalianRyegrassPT){
   <td rowSpan={12} colSpan={2} className="border-[1px] border-black text-center align-middle">
     이탈리안<br />라이그라스<br />20Kg
   </td>
-  <td className="border-[1px] border-black text-start h-[31px] pl-1">플로리다80</td>
+  <td className="border-[1px] border-black text-start h-[28px] pl-1">플로리다80</td>
   <FeedDetailRow 
     quantity={breedNum === 0 ? quantity : undefined} 
     weight={breedNum === 0 ? weight : undefined}
@@ -134,7 +134,7 @@ function ItalianRyegrass({data,breedNum,setRemark}:ItalianRyegrassPT){
     return idx === 9
   }
   return  <tr key={idx}>
-  <td className="border-[1px] border-black text-start pl-1 h-[31px]">
+  <td className="border-[1px] border-black text-start pl-1 h-[28px]">
     { breedNum === -1 && !hasVariety(productName as string) && isEmptyCell(idx) ? productName : variety}
   </td>
    <FeedDetailRow 
@@ -179,7 +179,7 @@ function Rye({breedNum,data,setRemark}:RyePT){
   <td rowSpan={2} className="border-[1px] border-black text-center align-middle">
     호밀 20Kg
   </td>
-  <td className="border-[1px] border-black text-center h-[31px]">조/중생</td>
+  <td className="border-[1px] border-black text-center h-[28px]">조/중생</td>
   <td className="border-[1px] border-black text-start pl-1 ">
     {isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
   </td>
@@ -191,7 +191,7 @@ function Rye({breedNum,data,setRemark}:RyePT){
   />
 </tr>
 <tr>
-  <td className="border-[1px] border-black text-center h-[31px]">만생</td>
+  <td className="border-[1px] border-black text-center h-[28px]">만생</td>
   <td className="border-[1px] border-black text-start pl-1">
     {isMidLate(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
   </td>
@@ -237,7 +237,7 @@ function Oats({data,breedNum,setRemark}:OatsPT){
   <td rowSpan={2} className="border-[1px] border-black text-center align-middle">
     연맥 20Kg
   </td>
-  <td className="border-[1px] border-black text-center h-[31px]">조생</td>
+  <td className="border-[1px] border-black text-center h-[28px]">조생</td>
   <td className="border-[1px] border-black text-start pl-1">
     {isEarlyMid(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
   </td>
@@ -249,7 +249,7 @@ function Oats({data,breedNum,setRemark}:OatsPT){
   />
 </tr>
 <tr>
-  <td className="border-[1px] border-black text-center h-[31px]">중/만생</td>
+  <td className="border-[1px] border-black text-center h-[28px]">중/만생</td>
   <td className="border-[1px] border-black text-start pl-1">
     {isMidLate(breedNum) && isMatchingVariety(productName as string) ? productName : ""}
   </td>
@@ -270,7 +270,7 @@ type TableFooterPt= {
 
 function TableFooter({quantity,weight}:TableFooterPt){
   return  <tr>
-  <td colSpan={4} className="border-[1px] border-black text-center h-[31px]">합계</td>
+  <td colSpan={4} className="border-[1px] border-black text-center h-[28px]">합계</td>
   <td className="border-[1px] border-black text-center custom-text">{quantity}</td>
   <td className="border-[1px] border-black text-center custom-text">{weight}</td>
   <td className="border-[1px] border-black"></td>
