@@ -93,6 +93,11 @@ export default function MultPage() {
       }
       @media print {
         body {
+          /* 프린트 시 body에 flexbox 적용하여 콘텐츠 중앙 정렬 */
+          display: flex;
+          justify-content: center; /* 수평 중앙 정렬 */
+          align-items: center; /* 수직 중앙 정렬 */
+          min-height: 100vh; /* 페이지 전체 높이 */
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
         }
@@ -172,7 +177,7 @@ export default function MultPage() {
                     <td className="border border-gray-300 px-2 py-1 text-gray-500 font-bold list-text">{idx+1}</td>
                     <td className="border border-gray-300 px-2 py-1 font-bold text-gray-800 list-text">{item.recipient}</td>
                     <td className="border border-gray-300 px-2 py-1 list-text">{item.phoneNumber}</td>
-                    <td className="border border-gray-300 px-2 py-1 text-left list-text">{item.address}</td>
+                    <td className="border border-gray-300 px-2 py-1 list-text">{item.address}</td>
                     <td className="border border-gray-300 px-2 py-1 bg-green-100 max-w-[100px] list-text ">{koreanProdcutName(item.productName as string)}{item.remarks ? `(${item.remarks})` : ""}</td>
                     <td className="border border-gray-300 px-2 py-1 bg-blue-100 list-text">{item.quantity}</td>
                     <td className="border border-gray-300 px-2 py-1 bg-blue-100 list-text">{item.weight}</td>

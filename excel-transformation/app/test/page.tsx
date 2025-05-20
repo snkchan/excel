@@ -20,7 +20,7 @@ export default function Test() {
     pageStyle: `
       @page {
         size: A4;
-        margin: 5mm ; /* 상 우 하 좌 여백 */
+        margin: 15mm 5mm 5mm 5mm ; /* 상 우 하 좌 여백 */
       }
       @media print {
         body {
