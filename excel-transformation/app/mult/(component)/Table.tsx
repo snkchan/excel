@@ -135,7 +135,7 @@ function FeedDetailRow({quantity, weight, remark, setRemark}: FeedDetailRowPT) {
       <td className="border-[1px] border-black text-center custom-text">{weight}</td>
       <td className="border-[1px] border-black p-0 ">
         <input
-          className="w-full h-full border-none outline-none text-semibold text-red-500 text-[14px] pl-1"
+          className="w-full h-full border-none outline-none text-semibold  text-[14px] pl-1"
           value={remark ?? ""}
           onChange={e => setRemark && setRemark(e.target.value)}
         />
@@ -401,8 +401,8 @@ type TableFooterPt = {
 function TableFooter({quantity,weight}:TableFooterPt){
   return  <tr>
   <td colSpan={4} className="border-[1px] border-black text-center h-[28px]">합계</td>
-  <td className="border-[1px] border-black text-center custom-text">{quantity}</td>
-  <td className="border-[1px] border-black text-center custom-text">{weight}</td>
+  <td className="border-[1px] border-black text-center  text-red-500">{quantity}</td>
+  <td className="border-[1px] border-black text-center  text-red-500">{weight}</td>
   <td className="border-[1px] border-black"></td>
 </tr>
 }

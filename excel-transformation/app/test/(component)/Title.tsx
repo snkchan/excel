@@ -5,9 +5,10 @@ import { ConvertedExcelDataType } from "@/app/types"
  */
 type TitlePt = {
   data: Array<ConvertedExcelDataType>
+  hasRecipient : boolean
 }
 
-export function Title({ data }: TitlePt) {
+export function Title({ data,hasRecipient }: TitlePt) {
   const { recipient, phoneNumber } = data[0]
   return (
     <div className=" grid grid-cols-[0.4fr_1fr_0.4fr]  font-bold text-3xl  tracking-widest  ">
@@ -17,8 +18,8 @@ export function Title({ data }: TitlePt) {
         수입대행 종자 인수증
       </p>
       <div className="text-base flex flex-col items-center justify-center h-full custom-text break-keep text-center">
-        <p className="text-[14px]">{recipient}</p>
-        <p className="text-[14px]">{phoneNumber}</p>
+        <p className="text-[14px]">{ hasRecipient && recipient}</p>
+        <p className="text-[14px]">{ hasRecipient &&phoneNumber}</p>
       </div>
     </div>
   )

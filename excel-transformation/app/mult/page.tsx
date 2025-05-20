@@ -12,6 +12,7 @@ import { SubTable } from "../test/(component)/SubTable"
 import { Details } from "../test/(component)/Details"
 import { CompanyName } from "../test/(component)/CompanyName"
 import { Footer } from "../test/(component)/Footer"
+import HomeBtn from "./(component)/HomeBtn"
 
 export default function MultPage() {
   const [data, setData] = useState<Array<ConvertedExcelDataType>>([])
@@ -25,8 +26,8 @@ export default function MultPage() {
     documentTitle: "인수증 목록",
     pageStyle: `
       @page {
-        size: A4 landscape; /* A4 가로 방향 */
-        margin: 10mm; /* 여백 조정 */
+        size: A4 landscape;
+        margin: 20mm 5mm;
       }
       @media print {
         body {
@@ -49,35 +50,38 @@ export default function MultPage() {
         }
   
         th, td {
-          border: 1px solid #d1d5db !important; /* 테두리 색상 */
+          border: 1px solid black !important; /* 테두리 색상 */
           padding: 4px 8px !important; /* 셀 패딩 조정 */
           word-wrap: break-word !important; /* 긴 단어 줄바꿈 */
           overflow-wrap: break-word !important; /* 긴 단어 줄바꿈 (CSS3) */
           text-align: center !important; /* 텍스트 가운데 정렬 */
         }
   
-        th {
-           background-color: #fef9c3 !important; /* 헤더 배경색 */
-           font-weight: bold !important;
-        }
-  
-        tbody tr:nth-child(even) {
-          background-color: #f9fafb !important; /* 홀수/짝수 행 배경색 */
-        }
-         tbody tr:hover {
-          background-color: #f3f4f6 !important; /* 호버 배경색 */
-        }
-  
   
         /* 컬럼 너비 조정 (화면에 맞춰 대략적으로 설정) */
-        th:nth-child(1), td:nth-child(1) { width: 5% !important; } /* 순번 */
+        th:nth-child(1), td:nth-child(1) { width: 6% !important; } /* 순번 */
         th:nth-child(2), td:nth-child(2) { width: 12% !important; } /* 성명 */
         th:nth-child(3), td:nth-child(3) { width: 14% !important; } /* 연락처 */
-        th:nth-child(4), td:nth-child(4) { width: 25% !important; text-align: center !important; } /* 주소 (왼쪽 정렬 유지) */
-        th:nth-child(5), td:nth-child(5) { width: 25% !important; background-color: #d1fae5 !important; } /* 품종 */
-        th:nth-child(6), td:nth-child(6) { width: 6% !important; background-color: #dbeafe !important; } /* 포수 */
-        th:nth-child(7), td:nth-child(7) { width: 6% !important; background-color: #dbeafe !important; } /* 중량 */
-        th:nth-child(8), td:nth-child(8) { width: 7% !important; } /* 확인 */
+        th:nth-child(4), td:nth-child(4) { width: 40% !important; text-align: center !important; } /* 주소 (왼쪽 정렬 유지) */
+        th:nth-child(5), td:nth-child(5) { width: 10% !important;  } /* 품종 */
+        th:nth-child(6), td:nth-child(6) { width: 10% !important;  } /* 포수 */
+        th:nth-child(7), td:nth-child(7) { width: 10% !important;  } /* 중량 */
+        th:nth-child(8), td:nth-child(8) { width: 10% !important; } /* 확인 */
+  
+        /* 입력 필드 위치 및 크기 조정 (화면 스타일과 유사하게) */
+        .print-input-header {
+            margin-left: 18rem !important; /* ml-[27rem] */
+            width: 30rem !important; /* w-[30rem] */
+            font-size: 1.5rem !important; /* text-2xl */
+            font-weight: bold !important; /* font-bold */
+            padding-left: 0.5rem !important; /* pl-2 */
+         
+        }
+  
+        /* 합계 행 배경색 강제 적용 */
+        table tbody tr.bg-\\[#cbe1c4\\] { /* 클래스 이름 그대로 사용 */
+             background-color: #cbe1c4 !important; /* 합계 행 배경색 */
+        }
       }
     `,
   })
@@ -89,7 +93,7 @@ export default function MultPage() {
     pageStyle: `
       @page {
         size: A4;
-        margin: 5mm;
+        margin: 5mm 2mm;
       }
       @media print {
         body {
@@ -141,6 +145,7 @@ export default function MultPage() {
           <h1 className="text-2xl font-bold">다중 인수증 확인</h1>
           <div className="flex items-center gap-4">
             <h3 className="text-lg font-bold">총 <span className="text-blue-500">{data.length}</span>건</h3>
+            <HomeBtn/>
             <button 
               onClick={() => setPage(prev => prev === 0 ? 1 : 0)}
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
@@ -158,39 +163,56 @@ export default function MultPage() {
 
         {page === 0 ? (
           <div ref={listPrintRef} className="overflow-x-auto">
-            <table className="min-w-full border border-gray-300 text-center">
+            <div className="w-full flex justify-start mb-3">
+              <input className="text-2xl font-bold pl-2  w-[30rem] ml-[27rem] print-input-header" defaultValue={"2025년 수입대행종자 "} />
+            </div>
+            <table className="min-w-full border border-black text-center">
               <thead>
                 <tr className="bg-yellow-100">
-                  <th className="border border-gray-300 px-2 py-1 w-[4rem]">순번</th>
-                  <th className="border border-gray-300 px-2 py-1 w-[12rem]">성명</th>
-                  <th className="border border-gray-300 px-2 py-1 w-[10rem]">연락처</th>
-                  <th className="border border-gray-300 px-2 py-1 w-[30rem]">주소</th>
-                  <th className="border border-gray-300 px-2 py-1 bg-green-100">품 종</th>
-                  <th className="border border-gray-300 px-2 py-1 bg-blue-100 w-[4rem]">포수</th>
-                  <th className="border border-gray-300 px-2 py-1 bg-blue-100 w-[4rem]" >중량</th>
-                  <th className="border border-gray-300 px-2 py-1 w-[5rem]">확인</th>
+                  <th className="border border-black px-2 py-1 w-[4rem]">순번</th>
+                  <th className="border border-black px-2 py-1 w-[12rem]">성명</th>
+                  <th className="border border-black px-2 py-1 w-[10rem]">연락처</th>
+                  <th className="border border-black px-2 py-1 w-[40rem]">주소</th>
+                  <th className="border border-black px-2 py-1 ">품 종</th>
+                  <th className="border border-black px-2 py-1  w-[4rem]">포수</th>
+                  <th className="border border-black px-2 py-1 w-[4rem]" >중량</th>
+                  <th className="border border-black px-2 py-1 w-[5rem]">확인</th>
                 </tr>
               </thead>
               <tbody>
                 {data.map((item, idx) => (
                   <tr key={idx} className="hover:bg-gray-50">
-                    <td className="border border-gray-300 px-2 py-1 text-gray-500 font-bold list-text">{idx+1}</td>
-                    <td className="border border-gray-300 px-2 py-1 font-bold text-gray-800 list-text">{item.recipient}</td>
-                    <td className="border border-gray-300 px-2 py-1 list-text">{item.phoneNumber}</td>
-                    <td className="border border-gray-300 px-2 py-1 list-text">{item.address}</td>
-                    <td className="border border-gray-300 px-2 py-1 bg-green-100 max-w-[100px] list-text ">{koreanProdcutName(item.productName as string)}{item.remarks ? `(${item.remarks})` : ""}</td>
-                    <td className="border border-gray-300 px-2 py-1 bg-blue-100 list-text">{item.quantity}</td>
-                    <td className="border border-gray-300 px-2 py-1 bg-blue-100 list-text">{item.weight}</td>
-                    <td className="border border-gray-300 px-2 py-1"></td>
+                    <td className="border border-black px-2 py-1 ">{idx+1}</td>
+                    <td className="border border-black px-2 py-1 ">{item.recipient}</td>
+                    <td className="border border-black px-2 py-1 ">{item.phoneNumber}</td>
+                    <td className="border border-black px-2 py-1 ">{item.address}</td>
+                    <td className="border border-black px-2 py-1  max-w-[100px] text-sm ">{koreanProdcutName(item.productName as string)}{item.remarks ? `(${item.remarks})` : ""}</td>
+                    <td className="border border-black px-2 py-1 bg-blue-100 ">{item.quantity}</td>
+                    <td className="border border-black px-2 py-1  ">{item.weight}</td>
+                    <td className="border border-black px-2 py-1"></td>
                   </tr>
                 ))}
+                <tr className="bg-[#cbe1c4]">
+                <th className="border border-black px-2 py-1 w-[4rem]"/>
+                  <th className="border border-black px-2 py-1 w-[12rem]"/>
+                  <th className="border border-black px-2 py-1 w-[10rem] font-bold">합계({data.length}곳)</th>
+                  <th className="border border-black px-2 py-1 w-[40rem]"></th>
+                  <th className="border border-black px-2 py-1 "/>
+                  <th className="border border-black px-2 py-1 w-[4rem] font-bold">
+                    {data.reduce((acc, item) => acc + (item.quantity ?? 0), 0)}
+                  </th>
+                  <th className="border border-black px-2 py-1 w-[4rem] font-bold">
+                    {data.reduce((acc, item) => acc + (item.weight ?? 0), 0)}
+                  </th>
+                  <th className="border border-black px-2 py-1 w-[5rem]"/>
+                </tr>
               </tbody>
             </table>
           </div>
         ) : (
           <div className="flex justify-center">
           <div ref={tablePrintRef} className="w-[900px]">
-            <Title data={data} />
+            <Title data={data} hasRecipient={false} />
             <SubTitle data={data} />
             <Table data={data} />
             <SubTable data={data} />

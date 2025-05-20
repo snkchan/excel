@@ -14,7 +14,7 @@ export function Details({ data }: DetailsPT) {
   return (
     <div className="w-full h-[160px]  grid grid-cols-[1.3fr_1fr]">
       <div className="px-4 py-2 grid grid-rows-4 w-full">
-        <p className="px-4 tracking-wider">
+        <p className="px-4 py-2 tracking-wider font-bold">
           상기 물량을 정히 인수하였음을 확인합니다.
         </p>
         <p className="w-full items-center justify-center flex space-x-14">

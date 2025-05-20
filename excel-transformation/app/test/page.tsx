@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
+import { useRouter } from "next/navigation"
 import { ConvertedExcelDataType } from "@/app/types"
 import { useReactToPrint } from 'react-to-print'
 import { Title } from "./(component)/Title"
@@ -12,6 +13,7 @@ import { Footer } from "./(component)/Footer"
 import Table from "./(component)/Table"
 
 export default function Test() {
+  const router = useRouter()
   const [data, setData] = useState<Array<ConvertedExcelDataType>>([])
   const printRef = useRef<HTMLDivElement>(null)
 
@@ -67,6 +69,12 @@ export default function Test() {
       <div className="w-[794px]">
         <div className="flex justify-end mb-4">
           <button 
+            onClick={() => router.push('/')}
+            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700 transition-colors mr-2"
+          >
+            홈으로
+          </button>
+          <button 
             onClick={handlePrint}
             className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
           >
@@ -74,7 +82,7 @@ export default function Test() {
           </button>
         </div>
         <div ref={printRef}>
-          <Title data={data} />
+          <Title data={data} hasRecipient = {true} />
           <SubTitle data={data} />
           <Table data={data}/>
           <SubTable data={data} />
