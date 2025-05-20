@@ -15,4 +15,7 @@
   th{
     @apply font-normal
   }
+  .list-text {
+    @apply text-sm
+  }
 }

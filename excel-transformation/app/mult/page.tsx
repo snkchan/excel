@@ -25,8 +25,8 @@ export default function MultPage() {
     documentTitle: "인수증 목록",
     pageStyle: `
       @page {
-        size: A4;
-        margin: 5mm;
+        size: A4 landscape; /* A4 가로 방향 */
+        margin: 10mm; /* 여백 조정 */
       }
       @media print {
         body {
@@ -40,6 +40,44 @@ export default function MultPage() {
           -webkit-print-color-adjust: exact !important;
           print-color-adjust: exact !important;
         }
+  
+        /* 테이블 스타일 조정 */
+        table {
+          width: 100% !important; /* 테이블 너비를 100%로 설정 */
+          border-collapse: collapse !important; /* 셀 간 간격 제거 */
+          table-layout: fixed !important; /* 컬럼 너비 고정 */
+        }
+  
+        th, td {
+          border: 1px solid #d1d5db !important; /* 테두리 색상 */
+          padding: 4px 8px !important; /* 셀 패딩 조정 */
+          word-wrap: break-word !important; /* 긴 단어 줄바꿈 */
+          overflow-wrap: break-word !important; /* 긴 단어 줄바꿈 (CSS3) */
+          text-align: center !important; /* 텍스트 가운데 정렬 */
+        }
+  
+        th {
+           background-color: #fef9c3 !important; /* 헤더 배경색 */
+           font-weight: bold !important;
+        }
+  
+        tbody tr:nth-child(even) {
+          background-color: #f9fafb !important; /* 홀수/짝수 행 배경색 */
+        }
+         tbody tr:hover {
+          background-color: #f3f4f6 !important; /* 호버 배경색 */
+        }
+  
+  
+        /* 컬럼 너비 조정 (화면에 맞춰 대략적으로 설정) */
+        th:nth-child(1), td:nth-child(1) { width: 5% !important; } /* 순번 */
+        th:nth-child(2), td:nth-child(2) { width: 12% !important; } /* 성명 */
+        th:nth-child(3), td:nth-child(3) { width: 14% !important; } /* 연락처 */
+        th:nth-child(4), td:nth-child(4) { width: 25% !important; text-align: center !important; } /* 주소 (왼쪽 정렬 유지) */
+        th:nth-child(5), td:nth-child(5) { width: 25% !important; background-color: #d1fae5 !important; } /* 품종 */
+        th:nth-child(6), td:nth-child(6) { width: 6% !important; background-color: #dbeafe !important; } /* 포수 */
+        th:nth-child(7), td:nth-child(7) { width: 6% !important; background-color: #dbeafe !important; } /* 중량 */
+        th:nth-child(8), td:nth-child(8) { width: 7% !important; } /* 확인 */
       }
     `,
   })
@@ -70,6 +108,7 @@ export default function MultPage() {
   })
 
   useEffect(() => {
+    // 페이지 로드 시 localStorage에서 데이터 읽어옴
     const storedData = localStorage.getItem('selectedShipments')
     if (storedData) {
       try {
@@ -80,13 +119,13 @@ export default function MultPage() {
         console.error("Invalid JSON:", error)
       }
     }
-  }, [])
 
-  useEffect(() => {
+    // 컴포넌트 언마운트 시 (페이지 이동 시) localStorage에서 데이터 삭제
     return () => {
+      console.log("Clearing localStorage on page move or unmount"); // 확인용 로그 추가
       localStorage.removeItem('selectedShipments')
     }
-  }, [])
+  }, []) // 빈 배열은 컴포넌트 마운트/언마운트 시에만 실행됨
 
   if (!data[0]) return null
 
@@ -117,26 +156,26 @@ export default function MultPage() {
             <table className="min-w-full border border-gray-300 text-center">
               <thead>
                 <tr className="bg-yellow-100">
-                  <th className="border border-gray-300 px-2 py-1">순번</th>
-                  <th className="border border-gray-300 px-2 py-1">성명</th>
-                  <th className="border border-gray-300 px-2 py-1">연락처</th>
-                  <th className="border border-gray-300 px-2 py-1">주소</th>
+                  <th className="border border-gray-300 px-2 py-1 w-[4rem]">순번</th>
+                  <th className="border border-gray-300 px-2 py-1 w-[12rem]">성명</th>
+                  <th className="border border-gray-300 px-2 py-1 w-[10rem]">연락처</th>
+                  <th className="border border-gray-300 px-2 py-1 w-[30rem]">주소</th>
                   <th className="border border-gray-300 px-2 py-1 bg-green-100">품 종</th>
-                  <th className="border border-gray-300 px-2 py-1 bg-blue-100">포수</th>
-                  <th className="border border-gray-300 px-2 py-1 bg-blue-100">중량</th>
-                  <th className="border border-gray-300 px-2 py-1">비고</th>
+                  <th className="border border-gray-300 px-2 py-1 bg-blue-100 w-[4rem]">포수</th>
+                  <th className="border border-gray-300 px-2 py-1 bg-blue-100 w-[4rem]" >중량</th>
+                  <th className="border border-gray-300 px-2 py-1 w-[5rem]">확인</th>
                 </tr>
               </thead>
               <tbody>
                 {data.map((item, idx) => (
                   <tr key={idx} className="hover:bg-gray-50">
-                    <td className="border border-gray-300 px-2 py-1 text-gray-500 font-bold">{idx+1}</td>
-                    <td className="border border-gray-300 px-2 py-1 font-bold text-gray-800">{item.recipient}</td>
-                    <td className="border border-gray-300 px-2 py-1">{item.phoneNumber}</td>
-                    <td className="border border-gray-300 px-2 py-1 text-left">{item.address}</td>
-                    <td className="border border-gray-300 px-2 py-1 bg-green-100 max-w-[100px]">{koreanProdcutName(item.productName as string)}{item.remarks ? `(${item.remarks})` : ""}</td>
-                    <td className="border border-gray-300 px-2 py-1 bg-blue-100">{item.quantity}</td>
-                    <td className="border border-gray-300 px-2 py-1 bg-blue-100">{item.weight}</td>
+                    <td className="border border-gray-300 px-2 py-1 text-gray-500 font-bold list-text">{idx+1}</td>
+                    <td className="border border-gray-300 px-2 py-1 font-bold text-gray-800 list-text">{item.recipient}</td>
+                    <td className="border border-gray-300 px-2 py-1 list-text">{item.phoneNumber}</td>
+                    <td className="border border-gray-300 px-2 py-1 text-left list-text">{item.address}</td>
+                    <td className="border border-gray-300 px-2 py-1 bg-green-100 max-w-[100px] list-text ">{koreanProdcutName(item.productName as string)}{item.remarks ? `(${item.remarks})` : ""}</td>
+                    <td className="border border-gray-300 px-2 py-1 bg-blue-100 list-text">{item.quantity}</td>
+                    <td className="border border-gray-300 px-2 py-1 bg-blue-100 list-text">{item.weight}</td>
                     <td className="border border-gray-300 px-2 py-1"></td>
                   </tr>
                 ))}
